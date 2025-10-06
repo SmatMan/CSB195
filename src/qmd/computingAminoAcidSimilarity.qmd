@@ -731,7 +731,7 @@ stopifnot(all(aaLabels %in% colnames(jointMat)))  # column names intact
 
 # Download the Rtsne package if needed ...
 if (! requireNamespace("Rtsne", quietly=TRUE)) {
-  install.packages("Rtsne")
+  install.packages("Rtsne", repos = "http://cran.us.r-project.org")
 }
 
 # Ready to run t-SNE ...
@@ -748,7 +748,7 @@ tsneRes <- Rtsne::Rtsne(as.matrix(jointMat),
 
 # Download the plotly package if needed ...
 if (! requireNamespace("plotly", quietly=TRUE)) {
-  install.packages("plotly")
+  install.packages("plotly", repos = "http://cran.us.r-project.org")
 }
 
 
