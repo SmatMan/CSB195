@@ -12,15 +12,10 @@ format:
     include-in-header:
       text:  |
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
           .version-info {
             font-size: 70%;
             color: #BBBBBB;
             margin-top: -10px;
-          }
-          * {
-            font-family: "Inconsolata", monospace;
-            font-optical-sizing: auto;
           }
           .quarto-code-block {
             background: #222;
