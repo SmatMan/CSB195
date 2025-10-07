@@ -6,7 +6,25 @@ from itertools import product
 
 BASE_DIR = "~/Documents/School/CSB195"
 
-aaSimilarity = pd.read_csv(f"{BASE_DIR}/dat/aaFeatureSpace.csv", index_col=0)
+SGC = {
+    'ATA': 'I', 'ATC': 'I', 'ATT': 'I', 'ATG': 'M',
+    'ACA': 'T', 'ACC': 'T', 'ACG': 'T', 'ACT': 'T',
+    'AAC': 'N', 'AAT': 'N', 'AAA': 'K', 'AAG': 'K',
+    'AGC': 'S', 'AGT': 'S', 'AGA': 'R', 'AGG': 'R',
+    'CTA': 'L', 'CTC': 'L', 'CTG': 'L', 'CTT': 'L',
+    'CCA': 'P', 'CCC': 'P', 'CCG': 'P', 'CCT': 'P',
+    'CAC': 'H', 'CAT': 'H', 'CAA': 'Q', 'CAG': 'Q',
+    'CGA': 'R', 'CGC': 'R', 'CGG': 'R', 'CGT': 'R',
+    'GTA': 'V', 'GTC': 'V', 'GTG': 'V', 'GTT': 'V',
+    'GCA': 'A', 'GCC': 'A', 'GCG': 'A', 'GCT': 'A',
+    'GAC': 'D', 'GAT': 'D', 'GAA': 'E', 'GAG': 'E',
+    'GGA': 'G', 'GGC': 'G', 'GGG': 'G', 'GGT': 'G',
+    'TCA': 'S', 'TCC': 'S', 'TCG': 'S', 'TCT': 'S',
+    'TTC': 'F', 'TTT': 'F', 'TTA': 'L', 'TTG': 'L',
+    'TAC': 'Y', 'TAT': 'Y', 'TAA': '*', 'TAG': '*',
+    'TGC': 'C', 'TGT': 'C', 'TGA': '*', 'TGG': 'W',
+}
+
 
 def construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame:
     """
@@ -67,8 +85,10 @@ def construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame:
 
     return dist_matrix
 
+aaSimilarity = pd.read_csv(f"{BASE_DIR}/dat/aaFeatureSpace.csv", index_col=0)
+dtable = construct_aa_table(aaSimilarity)
 
-def aaSim(aa1: str, aa2: str, dtable: pd.DataFrame) -> np.float64:
+def aaSim(aa1: str, aa2: str) -> np.float64:
     """
     aaSim(ilarity) - Looks up and returns the pre-calculated distance between two amino acids.
 
@@ -144,9 +164,68 @@ def create_genetic_code(sc_limit: int) -> dict:
     
     return genetic_code
 
+def score_gc(gc: dict) -> np.float64:
+    """
+    Calculates a 'robustness' score for a genetic code.
+
+    The score is the sum of physicochemical distances between amino acids 
+    resulting from all possible single-nucleotide point mutations across all 
+    64 codons. A lower score indicates a more robust code where mutations 
+    tend to result in similar amino acids.
+
+    Args:
+        gc: A dictionary mapping 64 codons to single-letter amino acid codes.
+        dtable: A DataFrame containing the pairwise distances between amino acids,
+                as created by the `construct_aa_table` function.
+
+    Returns:
+        A np.float64 value representing the total cost of all possible mutations.
+        
+    Raises:
+        ValueError: If a codon in the genetic code is not found in the distance table.
+    """
+    bases = ['A', 'T', 'G', 'C']
+    total_distance_cost: float = 0.0
+
+    # Generate all 64 codons
+    all_codons = [''.join(p) for p in product(bases, repeat=3)]
+
+    for original_codon in all_codons:
+        # Get the amino acid for the original, unmutated codon
+        original_aa = gc.get(original_codon)
+        if original_aa is None:
+            raise ValueError(f"Codon '{original_codon}' not found in the provided genetic code.")
+
+        # Iterate through each of the 3 positions in the codon
+        for i in range(3):
+            original_base = original_codon[i]
+            # Iterate through each possible mutation at that position
+            for mutated_base in bases:
+                # We only care about actual mutations, not silent changes
+                if original_base != mutated_base:
+                    # Construct the mutated codon
+                    mutated_codon_list = list(original_codon)
+                    mutated_codon_list[i] = mutated_base
+                    mutated_codon = "".join(mutated_codon_list)
+                    
+                    # Get the amino acid for the new, mutated codon
+                    mutated_aa = gc.get(mutated_codon)
+                    if mutated_aa is None:
+                        raise ValueError(f"Mutated codon '{mutated_codon}' not found in the provided genetic code.")
+                    
+                    # Use aaSim to get the distance and add it to the total cost
+                    # Note: We are directly using the dtable here as aaSim is just a lookup
+                    distance = dtable.at[original_aa, mutated_aa]
+                    print(f"Type: {type(distance)}")
+                    total_distance_cost += distance
+
+    return np.float64(total_distance_cost)
 
 if __name__ == "__main__":
     # distance_table = construct_aa_table(dat=aaSimilarity)
     # # print(distance_table.to_string())
     # print(aaSim("A", "W", distance_table))
     # print(aaSim("W", "C", distance_table))
+    gc = create_genetic_code(3)
+    print(score_gc(SGC))
+    
