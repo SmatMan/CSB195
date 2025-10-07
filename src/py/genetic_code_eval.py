@@ -215,8 +215,7 @@ def score_gc(gc: dict) -> np.float64:
                     
                     # Use aaSim to get the distance and add it to the total cost
                     # Note: We are directly using the dtable here as aaSim is just a lookup
-                    distance = dtable.at[original_aa, mutated_aa]
-                    print(f"Type: {type(distance)}")
+                    distance: np.float64 = dtable.at[original_aa, mutated_aa]
                     total_distance_cost += distance
 
     return np.float64(total_distance_cost)
@@ -227,5 +226,5 @@ if __name__ == "__main__":
     # print(aaSim("A", "W", distance_table))
     # print(aaSim("W", "C", distance_table))
     gc = create_genetic_code(3)
-    print(score_gc(SGC))
+    print(score_gc(gc))
     
