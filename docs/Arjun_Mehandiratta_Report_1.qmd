@@ -9,6 +9,7 @@ format:
     toc: true
     number-sections: true
     code-fold: false
+    code-summary: "Show the code"
     include-in-header:
       text:  |
         <style>
@@ -79,11 +80,306 @@ other randomly generated code.
       Sum up the distances of every possible mutation and return as np.float64 
   ```
 
+# Setting Up the Environment
+## Some constants
+- I import some packages and add some constants to begin. STOP_CODON_LIMIT determines the max of how many stop codons the generator will try to assign.
+  ```{python}
+  import sys
+  import statistics as stats
+  import pandas as pd
+  import numpy as np
+  import random
+  from itertools import product
+  import matplotlib.pyplot as plt
+
+  BASE_DIR = "~/Documents/School/CSB195"
+  STOP_CODON_LIMIT = 3
+
+  SGC = {
+      'ATA': 'I', 'ATC': 'I', 'ATT': 'I', 'ATG': 'M',
+      'ACA': 'T', 'ACC': 'T', 'ACG': 'T', 'ACT': 'T',
+      'AAC': 'N', 'AAT': 'N', 'AAA': 'K', 'AAG': 'K',
+      'AGC': 'S', 'AGT': 'S', 'AGA': 'R', 'AGG': 'R',
+      'CTA': 'L', 'CTC': 'L', 'CTG': 'L', 'CTT': 'L',
+      'CCA': 'P', 'CCC': 'P', 'CCG': 'P', 'CCT': 'P',
+      'CAC': 'H', 'CAT': 'H', 'CAA': 'Q', 'CAG': 'Q',
+      'CGA': 'R', 'CGC': 'R', 'CGG': 'R', 'CGT': 'R',
+      'GTA': 'V', 'GTC': 'V', 'GTG': 'V', 'GTT': 'V',
+      'GCA': 'A', 'GCC': 'A', 'GCG': 'A', 'GCT': 'A',
+      'GAC': 'D', 'GAT': 'D', 'GAA': 'E', 'GAG': 'E',
+      'GGA': 'G', 'GGC': 'G', 'GGG': 'G', 'GGT': 'G',
+      'TCA': 'S', 'TCC': 'S', 'TCG': 'S', 'TCT': 'S',
+      'TTC': 'F', 'TTT': 'F', 'TTA': 'L', 'TTG': 'L',
+      'TAC': 'Y', 'TAT': 'Y', 'TAA': '*', 'TAG': '*',
+      'TGC': 'C', 'TGT': 'C', 'TGA': '*', 'TGG': 'W',
+  }
+  ```
+## Importing the data
+- Since the original data was in .Rds format, I used R's write.csv() command to export `dat/aaFeatureSpace.2025.Rds` to `dat/aaFeatureSpace.csv`
+- Python accesses this data and constructs a similarity lookup table using the following code:
+  ```{python}
+  #| code-fold: true
+  def construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame:
+    """
+    Constructs a 21x21 matrix of Euclidean distances between amino acids.
+
+    The function calculates the distance between 20 standard amino acids based on 
+    12 principal components and adds a pseudo 'STOP' codon.
+
+    Args:
+        dat: A pandas DataFrame with amino acid single-letter codes as the index 
+             and 12 principal components (PC1-PC12) as columns.
+
+    Returns:
+        A 21x21 pandas DataFrame containing the Euclidean distances between all 
+        20 amino acids and a 'STOP' codon.
+    """
+    # --- FIX ---
+    # Ensure that the dataframe values are numeric before calculations
+    # This prevents the TypeError during vector subtraction.
+    dat_numeric = dat.apply(pd.to_numeric, errors='coerce')
+    # It's good practice to check if coercion created any NaN values
+    if dat_numeric.isnull().values.any():
+        print("Warning: Non-numeric values were found and converted to NaN.")
+
+    # Define the constant for calculating the distance to the stop codon
+    STOP_DIST = 1.5
+
+    # Extract the list of amino acids from the input DataFrame's index
+    amino_acids = dat_numeric.index.tolist()
+
+    # Initialize an empty square DataFrame to hold the distances
+    dist_matrix = pd.DataFrame(index=amino_acids, columns=amino_acids, dtype=float)
+
+    # Calculate the Euclidean distance for each pair of amino acids
+    for aa1 in amino_acids:
+        for aa2 in amino_acids:
+            # Retrieve the 12-dimensional vectors for the two amino acids
+            vec1 = dat_numeric.loc[aa1].values
+            vec2 = dat_numeric.loc[aa2].values
+            
+            # Compute the Euclidean distance and store it in the matrix
+            distance = np.linalg.norm(vec1 - vec2)
+            dist_matrix.loc[aa1, aa2] = distance
+
+    # Find the maximum distance value among the amino acids
+    max_dist = dist_matrix.values.max()
+
+    # Calculate the distance for the stop codon
+    stop_codon_dist = STOP_DIST * max_dist
+    
+    # Add a 'STOP' column and row to the matrix
+    stop_label = '*'
+    dist_matrix[stop_label] = stop_codon_dist
+    dist_matrix.loc[stop_label] = stop_codon_dist
+    
+    # The distance from 'STOP' to itself is 0
+    dist_matrix.loc[stop_label, stop_label] = 0.0
+
+    return dist_matrix
+
+  aaSimilarity = pd.read_csv(f"{BASE_DIR}/dat/aaFeatureSpace.csv", index_col=0)
+  dtable = construct_aa_table(aaSimilarity)
+  ```
+- Now the lookup table is constructed nicely and stored in `dtable`:
+  ```{python}
+  dtable
+  ```
+## Generator and Scorer
+- Now we can define the generator function with the following:
+  ```{python}
+  #| code-fold: true
+  def create_genetic_code(sc_limit: int) -> dict:
+    """
+    Creates a random genetic code config that maps all 64 codons to all 
+    20 amino acids and at least one stop codon.
+
+    Args:
+        sc_limit: The maximum number of stop codons allowed (the actual
+                  number will be chosen randomly between 1 and sc_limit).
+
+    Returns:
+        A dictionary mapping each of the 64 codons to a single-letter 
+        amino acid code or a stop codon ('*').
+        
+    Raises:
+        ValueError: If sc_limit is not within a reasonable range (1 to 10).
+    """
+    # Validate the stop codon limit to a sensible range
+    if not 1 <= sc_limit <= 10:
+        raise ValueError("sc_limit must be between 1 and 10 for practical genetic codes.")
+
+    # Define the building blocks for the genetic code
+    bases = ['A', 'T', 'G', 'C']
+    amino_acids = list("ACDEFGHIKLMNPQRSTVWY")  # 20 standard amino acids
+    stop_symbol = '*'
+
+    # 1. Generate all 64 possible codons
+    all_codons = [''.join(p) for p in product(bases, repeat=3)]
+    random.shuffle(all_codons)
+
+    # 2. Determine the number of stop codons
+    num_stop_codons = random.randint(1, sc_limit)
+
+    # 3. Create the pool of assignments (amino acids + stops)
+    # Ensure all 20 amino acids are present at least once
+    assignments = amino_acids.copy()
+    
+    # Add the stop codons
+    assignments.extend([stop_symbol] * num_stop_codons)
+
+    # Fill the remaining slots with random amino acids to reach 64 total assignments
+    remaining_slots = 64 - len(assignments)
+    assignments.extend(random.choices(amino_acids, k=remaining_slots))
+    
+    # Shuffle the assignments to ensure randomness
+    random.shuffle(assignments)
+
+    # 4. Create the dictionary by mapping codons to assignments
+    genetic_code = dict(zip(all_codons, assignments))
+    
+    return genetic_code
+  ```
+- And we can see that running this function generates us a nice randomly assigned genetic code:
+  ```{python}
+  test_code = create_genetic_code(2) # with max 2 stop codons
+  pd.DataFrame([test_code]) # display nicely
+  ```
+- Next is the scorer function, defined as follows:
+  ```{python}
+  #| code-fold: true
+  def score_gc(gc: dict) -> np.float64:
+    """
+    Calculates a 'robustness' score for a genetic code.
+
+    The score is the sum of physicochemical distances between amino acids 
+    resulting from all possible single-nucleotide point mutations across all 
+    64 codons. A lower score indicates a more robust code where mutations 
+    tend to result in similar amino acids.
+
+    Args:
+        gc: A dictionary mapping 64 codons to single-letter amino acid codes.
+        dtable: A DataFrame containing the pairwise distances between amino acids,
+                as created by the `construct_aa_table` function.
+
+    Returns:
+        A np.float64 value representing the total cost of all possible mutations.
+        
+    Raises:
+        ValueError: If a codon in the genetic code is not found in the distance table.
+    """
+    bases = ['A', 'T', 'G', 'C']
+    total_distance_cost: float = 0.0
+
+    # Generate all 64 codons
+    all_codons = [''.join(p) for p in product(bases, repeat=3)]
+
+    for original_codon in all_codons:
+        # Get the amino acid for the original, unmutated codon
+        original_aa = gc.get(original_codon)
+        if original_aa is None:
+            raise ValueError(f"Codon '{original_codon}' not found in the provided genetic code.")
+
+        # Iterate through each of the 3 positions in the codon
+        for i in range(3):
+            original_base = original_codon[i]
+            # Iterate through each possible mutation at that position
+            for mutated_base in bases:
+                # We only care about actual mutations, not silent changes
+                if original_base != mutated_base:
+                    # Construct the mutated codon
+                    mutated_codon_list = list(original_codon)
+                    mutated_codon_list[i] = mutated_base
+                    mutated_codon = "".join(mutated_codon_list)
+                    
+                    # Get the amino acid for the new, mutated codon
+                    mutated_aa = gc.get(mutated_codon)
+                    if mutated_aa is None:
+                        raise ValueError(f"Mutated codon '{mutated_codon}' not found in the provided genetic code.")
+                    
+                    # Use aaSim to get the distance and add it to the total cost
+                    # Note: We are directly using the dtable here as aaSim is just a lookup
+                    distance: np.float64 = dtable.at[original_aa, mutated_aa]
+                    total_distance_cost += distance
+
+    return np.float64(total_distance_cost)
+  ```
+- To ensure this function works, we will test the Standard Genetic Code against the baseline in the next section
+
+## Ensuring Baseline
+- The baseline score for the SGC was defined in class as `9856.116`. In order to ensure nothing has gone wrong, we will test our functions to see if it returns the same score.
+- Since we already have the SGC defined in `SGC` from the constants earlier, we will use that here. 
+  ```{python}
+  pd.DataFrame([SGC])
+  ```
+- Scoring it provides us with the following:
+  ```{python}
+  score_gc(SGC)
+  ```
+- Hooray! We can see the code has scored the Standard Genetic Code equal to the baseline!! (to an even more precise figure!).
+
+# Data
+
+## Comparing Random Codes to the SGC
+- Let's create a helper function to generate and test random GCs called `gen_and_score(times)`; where `times` is the amount of trials to run.
+  ```{python}
+  #| code-fold: true
+  def gen_and_score(times: int) -> list:
+      scores = []
+      while len(scores) < times:
+          gc = create_genetic_code(STOP_CODON_LIMIT)
+          scores.append(float(score_gc(gc)))
+      return scores
+  ```
+- Now, let's generate 1000 random genetic codes, score them, and plot them on a graph. 
+  ```{python}
+  attempts = 1000
+  scores = gen_and_score(attempts)
+  ```
+  ```{python}
+  plt.hist(scores, bins=40, edgecolor='black')
+  plt.title(f'Distribution of Genetic Code Scores (n={attempts})')
+  plt.xlabel('Score')
+  plt.ylabel('Frequency')
+  plt.show()
+  ```
+- This is nice! We get a nice bell curve, and we can see the scores average between 12,000 and 15,000. These scores are MUCH higher than the SGC's score, however. Let's plot the SCG score as well to visualize this.
+  ```{python}
+  scores.append(score_gc(SGC))
+  plt.hist(scores, bins=50, edgecolor='black')
+  plt.title(f'Distribution of Genetic Code Scores (n={attempts})')
+  plt.xlabel('Score')
+  plt.ylabel('Frequency')
+  plt.show()
+  ```
+- Our random codes score *significantly* worse than the standard genetic code. Let's try generating more codes (5000) to try to brute-force optimize...
+  ```{python}
+  attempts = 5000
+  scores = gen_and_score(attempts)
+  ```
+  ```{python}
+  plt.hist(scores, bins=40, edgecolor='black')
+  plt.title(f'Distribution of Genetic Code Scores (n={attempts})')
+  plt.xlabel('Score')
+  plt.ylabel('Frequency')
+  plt.show()
+  ```
+- We get a wider distribution with more attempts, however when compared to the SGC:
+  ```{python}
+  scores.append(score_gc(SGC))
+  plt.hist(scores, bins=60, edgecolor='black')
+  plt.title(f'Distribution of Genetic Code Scores (n={attempts})')
+  plt.xlabel('Score')
+  plt.ylabel('Frequency')
+  plt.show()
+  ```
+- We can clearly see that the Standard Genetic Code is extremely well optimized when compared to random genetic codes.
+
 # Appendix
 ## Assumptions
 - A lookup table exists created from distances between amino acids from data in PCAs aaFeatureSpace.2025.Rds used in class
 - I define my computable measure of tolerance of point mutations as a score that, for any genetic code, determines all possible point shift mutations for each codon, calculates the distances between the original and mutated amino acid (using lookup table) and sums the distances to return the score.
-- I explain above how the function
+- I explain above how the function create_genetic_code() creates a valid genetic code. To summarize: 20 amino acids are assigned to 20 codons, a random amount of stop codons (as specified) are added, the rest are filled with random amino acids.
 
 ## Preparing the report
 - Oct 6, 2025: 

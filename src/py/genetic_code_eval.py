@@ -1,8 +1,10 @@
 import sys
+import statistics as stats
 import pandas as pd
 import numpy as np
 import random
 from itertools import product
+import matplotlib.pyplot as plt
 
 BASE_DIR = "~/Documents/School/CSB195"
 STOP_CODON_LIMIT = 3
@@ -240,7 +242,13 @@ def random_optimization() -> np.float64:
             print(f"{tries} total tries")
             sys.exit()
             
-    
+def gen_and_score(times: int) -> list:
+    scores = []
+    while len(scores) < times:
+        gc = create_genetic_code(STOP_CODON_LIMIT)
+        scores.append(float(score_gc(gc)))
+    return scores
+   
 
 if __name__ == "__main__":
     # distance_table = construct_aa_table(dat=aaSimilarity)
@@ -251,5 +259,8 @@ if __name__ == "__main__":
     # gc = create_genetic_code(STOP_CODON_LIMIT)
     # print(score_gc(gc))
     
-    random_optimization()
+    # random_optimization()
     
+    scores = gen_and_score(200)
+    print(len(scores))
+    print(stats.mean(scores))

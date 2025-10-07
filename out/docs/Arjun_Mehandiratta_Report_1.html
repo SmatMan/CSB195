@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arjun Mehandiratta">
-<meta name="dcterms.date" content="2025-10-06">
+<meta name="dcterms.date" content="2025-10-07">
 
 <title>Report 1</title>
 <style>
@@ -22,10 +22,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="Arjun_Mehandiratta_Report_1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="Arjun_Mehandiratta_Report_1_files/libs/clipboard/clipboard.min.js"></script>
 <script src="Arjun_Mehandiratta_Report_1_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="Arjun_Mehandiratta_Report_1_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="Arjun_Mehandiratta_Report_1_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -37,6 +72,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="Arjun_Mehandiratta_Report_1_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="Arjun_Mehandiratta_Report_1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="Arjun_Mehandiratta_Report_1_files/libs/bootstrap/bootstrap-01837272e09a7ffd4015b00fc1d96172.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <style>
   .version-info {
     font-size: 70%;
@@ -70,10 +108,21 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">1</span> Overview</a></li>
   <li><a href="#specification" id="toc-specification" class="nav-link" data-scroll-target="#specification"><span class="header-section-number">2</span> Specification</a></li>
-  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="header-section-number">3</span> Appendix</a>
+  <li><a href="#setting-up-the-environment" id="toc-setting-up-the-environment" class="nav-link" data-scroll-target="#setting-up-the-environment"><span class="header-section-number">3</span> Setting Up the Environment</a>
   <ul class="collapse">
-  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">3.1</span> Assumptions</a></li>
-  <li><a href="#preparing-the-report" id="toc-preparing-the-report" class="nav-link" data-scroll-target="#preparing-the-report"><span class="header-section-number">3.2</span> Preparing the report</a></li>
+  <li><a href="#some-constants" id="toc-some-constants" class="nav-link" data-scroll-target="#some-constants"><span class="header-section-number">3.1</span> Some constants</a></li>
+  <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data"><span class="header-section-number">3.2</span> Importing the data</a></li>
+  <li><a href="#generator-and-scorer" id="toc-generator-and-scorer" class="nav-link" data-scroll-target="#generator-and-scorer"><span class="header-section-number">3.3</span> Generator and Scorer</a></li>
+  <li><a href="#ensuring-baseline" id="toc-ensuring-baseline" class="nav-link" data-scroll-target="#ensuring-baseline"><span class="header-section-number">3.4</span> Ensuring Baseline</a></li>
+  </ul></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">4</span> Data</a>
+  <ul class="collapse">
+  <li><a href="#comparing-random-codes-to-the-sgc" id="toc-comparing-random-codes-to-the-sgc" class="nav-link" data-scroll-target="#comparing-random-codes-to-the-sgc"><span class="header-section-number">4.1</span> Comparing Random Codes to the SGC</a></li>
+  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="header-section-number">5</span> Appendix</a>
+  <ul class="collapse">
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">5.1</span> Assumptions</a></li>
+  <li><a href="#preparing-the-report" id="toc-preparing-the-report" class="nav-link" data-scroll-target="#preparing-the-report"><span class="header-section-number">5.2</span> Preparing the report</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -100,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 6, 2025</p>
+      <p class="date">October 7, 2025</p>
     </div>
   </div>
   
@@ -113,7 +162,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="version-info">
-<p>Last updated October 6, 2025.</p>
+<p>Last updated October 7, 2025.</p>
 </div>
 <section id="overview" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
@@ -157,18 +206,1038 @@ Functions:
     Sum up the distances of every possible mutation and return as np.float64 </code></pre></li>
 </ul>
 </section>
-<section id="appendix" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Appendix</h1>
-<section id="assumptions" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="assumptions"><span class="header-section-number">3.1</span> Assumptions</h2>
+<section id="setting-up-the-environment" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Setting Up the Environment</h1>
+<section id="some-constants" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="some-constants"><span class="header-section-number">3.1</span> Some constants</h2>
+<ul>
+<li><p>I import some packages and add some constants to begin. STOP_CODON_LIMIT determines the max of how many stop codons the generator will try to assign.</p>
+<div id="6534ffc5" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics <span class="im">as</span> stats</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>BASE_DIR <span class="op">=</span> <span class="st">"~/Documents/School/CSB195"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>STOP_CODON_LIMIT <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>SGC <span class="op">=</span> {</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ATA'</span>: <span class="st">'I'</span>, <span class="st">'ATC'</span>: <span class="st">'I'</span>, <span class="st">'ATT'</span>: <span class="st">'I'</span>, <span class="st">'ATG'</span>: <span class="st">'M'</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ACA'</span>: <span class="st">'T'</span>, <span class="st">'ACC'</span>: <span class="st">'T'</span>, <span class="st">'ACG'</span>: <span class="st">'T'</span>, <span class="st">'ACT'</span>: <span class="st">'T'</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AAC'</span>: <span class="st">'N'</span>, <span class="st">'AAT'</span>: <span class="st">'N'</span>, <span class="st">'AAA'</span>: <span class="st">'K'</span>, <span class="st">'AAG'</span>: <span class="st">'K'</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AGC'</span>: <span class="st">'S'</span>, <span class="st">'AGT'</span>: <span class="st">'S'</span>, <span class="st">'AGA'</span>: <span class="st">'R'</span>, <span class="st">'AGG'</span>: <span class="st">'R'</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CTA'</span>: <span class="st">'L'</span>, <span class="st">'CTC'</span>: <span class="st">'L'</span>, <span class="st">'CTG'</span>: <span class="st">'L'</span>, <span class="st">'CTT'</span>: <span class="st">'L'</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CCA'</span>: <span class="st">'P'</span>, <span class="st">'CCC'</span>: <span class="st">'P'</span>, <span class="st">'CCG'</span>: <span class="st">'P'</span>, <span class="st">'CCT'</span>: <span class="st">'P'</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CAC'</span>: <span class="st">'H'</span>, <span class="st">'CAT'</span>: <span class="st">'H'</span>, <span class="st">'CAA'</span>: <span class="st">'Q'</span>, <span class="st">'CAG'</span>: <span class="st">'Q'</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CGA'</span>: <span class="st">'R'</span>, <span class="st">'CGC'</span>: <span class="st">'R'</span>, <span class="st">'CGG'</span>: <span class="st">'R'</span>, <span class="st">'CGT'</span>: <span class="st">'R'</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GTA'</span>: <span class="st">'V'</span>, <span class="st">'GTC'</span>: <span class="st">'V'</span>, <span class="st">'GTG'</span>: <span class="st">'V'</span>, <span class="st">'GTT'</span>: <span class="st">'V'</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GCA'</span>: <span class="st">'A'</span>, <span class="st">'GCC'</span>: <span class="st">'A'</span>, <span class="st">'GCG'</span>: <span class="st">'A'</span>, <span class="st">'GCT'</span>: <span class="st">'A'</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GAC'</span>: <span class="st">'D'</span>, <span class="st">'GAT'</span>: <span class="st">'D'</span>, <span class="st">'GAA'</span>: <span class="st">'E'</span>, <span class="st">'GAG'</span>: <span class="st">'E'</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GGA'</span>: <span class="st">'G'</span>, <span class="st">'GGC'</span>: <span class="st">'G'</span>, <span class="st">'GGG'</span>: <span class="st">'G'</span>, <span class="st">'GGT'</span>: <span class="st">'G'</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TCA'</span>: <span class="st">'S'</span>, <span class="st">'TCC'</span>: <span class="st">'S'</span>, <span class="st">'TCG'</span>: <span class="st">'S'</span>, <span class="st">'TCT'</span>: <span class="st">'S'</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TTC'</span>: <span class="st">'F'</span>, <span class="st">'TTT'</span>: <span class="st">'F'</span>, <span class="st">'TTA'</span>: <span class="st">'L'</span>, <span class="st">'TTG'</span>: <span class="st">'L'</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TAC'</span>: <span class="st">'Y'</span>, <span class="st">'TAT'</span>: <span class="st">'Y'</span>, <span class="st">'TAA'</span>: <span class="st">'*'</span>, <span class="st">'TAG'</span>: <span class="st">'*'</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TGC'</span>: <span class="st">'C'</span>, <span class="st">'TGT'</span>: <span class="st">'C'</span>, <span class="st">'TGA'</span>: <span class="st">'*'</span>, <span class="st">'TGG'</span>: <span class="st">'W'</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></li>
+</ul>
+</section>
+<section id="importing-the-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="importing-the-data"><span class="header-section-number">3.2</span> Importing the data</h2>
+<ul>
+<li><p>Since the original data was in .Rds format, I used R’s write.csv() command to export <code>dat/aaFeatureSpace.2025.Rds</code> to <code>dat/aaFeatureSpace.csv</code></p></li>
+<li><p>Python accesses this data and constructs a similarity lookup table using the following code:</p>
+<div id="ebacae05" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> construct_aa_table(dat: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Constructs a 21x21 matrix of Euclidean distances between amino acids.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">  The function calculates the distance between 20 standard amino acids based on </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">  12 principal components and adds a pseudo 'STOP' codon.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">  Args:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">      dat: A pandas DataFrame with amino acid single-letter codes as the index </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">           and 12 principal components (PC1-PC12) as columns.</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">  Returns:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">      A 21x21 pandas DataFrame containing the Euclidean distances between all </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">      20 amino acids and a 'STOP' codon.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">  """</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- FIX ---</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure that the dataframe values are numeric before calculations</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This prevents the TypeError during vector subtraction.</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  dat_numeric <span class="op">=</span> dat.<span class="bu">apply</span>(pd.to_numeric, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># It's good practice to check if coercion created any NaN values</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> dat_numeric.isnull().values.<span class="bu">any</span>():</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>(<span class="st">"Warning: Non-numeric values were found and converted to NaN."</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the constant for calculating the distance to the stop codon</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  STOP_DIST <span class="op">=</span> <span class="fl">1.5</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the list of amino acids from the input DataFrame's index</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  amino_acids <span class="op">=</span> dat_numeric.index.tolist()</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize an empty square DataFrame to hold the distances</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  dist_matrix <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>amino_acids, columns<span class="op">=</span>amino_acids, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the Euclidean distance for each pair of amino acids</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> aa1 <span class="kw">in</span> amino_acids:</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> aa2 <span class="kw">in</span> amino_acids:</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Retrieve the 12-dimensional vectors for the two amino acids</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>          vec1 <span class="op">=</span> dat_numeric.loc[aa1].values</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>          vec2 <span class="op">=</span> dat_numeric.loc[aa2].values</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Compute the Euclidean distance and store it in the matrix</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>          distance <span class="op">=</span> np.linalg.norm(vec1 <span class="op">-</span> vec2)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>          dist_matrix.loc[aa1, aa2] <span class="op">=</span> distance</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find the maximum distance value among the amino acids</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  max_dist <span class="op">=</span> dist_matrix.values.<span class="bu">max</span>()</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the distance for the stop codon</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  stop_codon_dist <span class="op">=</span> STOP_DIST <span class="op">*</span> max_dist</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a 'STOP' column and row to the matrix</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  stop_label <span class="op">=</span> <span class="st">'*'</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  dist_matrix[stop_label] <span class="op">=</span> stop_codon_dist</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  dist_matrix.loc[stop_label] <span class="op">=</span> stop_codon_dist</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The distance from 'STOP' to itself is 0</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  dist_matrix.loc[stop_label, stop_label] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> dist_matrix</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>aaSimilarity <span class="op">=</span> pd.read_csv(<span class="ss">f"</span><span class="sc">{</span>BASE_DIR<span class="sc">}</span><span class="ss">/dat/aaFeatureSpace.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>dtable <span class="op">=</span> construct_aa_table(aaSimilarity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div></li>
+<li><p>Now the lookup table is constructed nicely and stored in <code>dtable</code>:</p>
+<div id="27818123" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dtable</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">C</th>
+<th data-quarto-table-cell-role="th">D</th>
+<th data-quarto-table-cell-role="th">E</th>
+<th data-quarto-table-cell-role="th">F</th>
+<th data-quarto-table-cell-role="th">G</th>
+<th data-quarto-table-cell-role="th">H</th>
+<th data-quarto-table-cell-role="th">I</th>
+<th data-quarto-table-cell-role="th">K</th>
+<th data-quarto-table-cell-role="th">L</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">N</th>
+<th data-quarto-table-cell-role="th">P</th>
+<th data-quarto-table-cell-role="th">Q</th>
+<th data-quarto-table-cell-role="th">R</th>
+<th data-quarto-table-cell-role="th">S</th>
+<th data-quarto-table-cell-role="th">T</th>
+<th data-quarto-table-cell-role="th">V</th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">Y</th>
+<th data-quarto-table-cell-role="th">*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">A</th>
+<td>0.000000</td>
+<td>18.176334</td>
+<td>21.211890</td>
+<td>21.923157</td>
+<td>22.371972</td>
+<td>11.482274</td>
+<td>18.900629</td>
+<td>19.645559</td>
+<td>27.036963</td>
+<td>17.392675</td>
+<td>...</td>
+<td>18.462433</td>
+<td>19.083326</td>
+<td>19.461327</td>
+<td>29.894757</td>
+<td>10.715891</td>
+<td>10.600212</td>
+<td>14.435550</td>
+<td>28.323295</td>
+<td>23.341264</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">C</th>
+<td>18.176334</td>
+<td>0.000000</td>
+<td>28.319709</td>
+<td>29.728459</td>
+<td>20.041857</td>
+<td>25.054519</td>
+<td>21.739702</td>
+<td>17.581695</td>
+<td>33.867608</td>
+<td>17.658081</td>
+<td>...</td>
+<td>25.926758</td>
+<td>27.312201</td>
+<td>27.016538</td>
+<td>33.663847</td>
+<td>22.000385</td>
+<td>20.114841</td>
+<td>13.842399</td>
+<td>25.908648</td>
+<td>22.289136</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">D</th>
+<td>21.211890</td>
+<td>28.319709</td>
+<td>0.000000</td>
+<td>7.859468</td>
+<td>32.456299</td>
+<td>23.219087</td>
+<td>18.435790</td>
+<td>32.599804</td>
+<td>18.891600</td>
+<td>30.707916</td>
+<td>...</td>
+<td>11.938848</td>
+<td>20.851585</td>
+<td>11.273871</td>
+<td>21.535519</td>
+<td>13.592779</td>
+<td>15.809162</td>
+<td>28.758401</td>
+<td>33.169889</td>
+<td>25.982454</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">E</th>
+<td>21.923157</td>
+<td>29.728459</td>
+<td>7.859468</td>
+<td>0.000000</td>
+<td>31.412447</td>
+<td>25.289262</td>
+<td>17.162447</td>
+<td>31.094875</td>
+<td>15.017994</td>
+<td>28.952665</td>
+<td>...</td>
+<td>12.332626</td>
+<td>22.363162</td>
+<td>8.935904</td>
+<td>18.980827</td>
+<td>16.066922</td>
+<td>17.324399</td>
+<td>27.976748</td>
+<td>31.759465</td>
+<td>24.054114</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">F</th>
+<td>22.371972</td>
+<td>20.041857</td>
+<td>32.456299</td>
+<td>31.412447</td>
+<td>0.000000</td>
+<td>31.582276</td>
+<td>21.746057</td>
+<td>11.326064</td>
+<td>34.060936</td>
+<td>9.293158</td>
+<td>...</td>
+<td>28.611496</td>
+<td>28.291862</td>
+<td>27.837117</td>
+<td>32.524010</td>
+<td>27.225385</td>
+<td>23.223101</td>
+<td>14.060650</td>
+<td>12.321010</td>
+<td>14.091799</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">G</th>
+<td>11.482274</td>
+<td>25.054519</td>
+<td>23.219087</td>
+<td>25.289262</td>
+<td>31.582276</td>
+<td>0.000000</td>
+<td>25.097377</td>
+<td>28.775849</td>
+<td>30.197159</td>
+<td>27.214751</td>
+<td>...</td>
+<td>20.767591</td>
+<td>20.145725</td>
+<td>23.307118</td>
+<td>33.426858</td>
+<td>13.828360</td>
+<td>17.115369</td>
+<td>23.954105</td>
+<td>35.957174</td>
+<td>30.544664</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">H</th>
+<td>18.900629</td>
+<td>21.739702</td>
+<td>18.435790</td>
+<td>17.162447</td>
+<td>21.746057</td>
+<td>25.097377</td>
+<td>0.000000</td>
+<td>23.465681</td>
+<td>20.076748</td>
+<td>21.236117</td>
+<td>...</td>
+<td>14.913534</td>
+<td>20.765900</td>
+<td>14.389646</td>
+<td>19.461579</td>
+<td>16.819221</td>
+<td>15.078192</td>
+<td>20.613181</td>
+<td>22.622245</td>
+<td>15.307727</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">I</th>
+<td>19.645559</td>
+<td>17.581695</td>
+<td>32.599804</td>
+<td>31.094875</td>
+<td>11.326064</td>
+<td>28.775849</td>
+<td>23.465681</td>
+<td>0.000000</td>
+<td>34.227760</td>
+<td>6.733640</td>
+<td>...</td>
+<td>28.616005</td>
+<td>27.744302</td>
+<td>28.779372</td>
+<td>34.776820</td>
+<td>26.230282</td>
+<td>22.495364</td>
+<td>7.080977</td>
+<td>19.449383</td>
+<td>19.319285</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">K</th>
+<td>27.036963</td>
+<td>33.867608</td>
+<td>18.891600</td>
+<td>15.017994</td>
+<td>34.060936</td>
+<td>30.197159</td>
+<td>20.076748</td>
+<td>34.227760</td>
+<td>0.000000</td>
+<td>32.194150</td>
+<td>...</td>
+<td>17.420960</td>
+<td>23.411609</td>
+<td>12.381269</td>
+<td>16.471912</td>
+<td>20.806245</td>
+<td>20.609675</td>
+<td>31.602886</td>
+<td>32.079634</td>
+<td>25.243565</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">L</th>
+<td>17.392675</td>
+<td>17.658081</td>
+<td>30.707916</td>
+<td>28.952665</td>
+<td>9.293158</td>
+<td>27.214751</td>
+<td>21.236117</td>
+<td>6.733640</td>
+<td>32.194150</td>
+<td>0.000000</td>
+<td>...</td>
+<td>27.084261</td>
+<td>25.801083</td>
+<td>26.292854</td>
+<td>32.900377</td>
+<td>24.287408</td>
+<td>20.874809</td>
+<td>8.152492</td>
+<td>18.577124</td>
+<td>16.909402</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">M</th>
+<td>17.359260</td>
+<td>15.066169</td>
+<td>27.880345</td>
+<td>26.681749</td>
+<td>11.131475</td>
+<td>27.144879</td>
+<td>17.351416</td>
+<td>13.573533</td>
+<td>29.369891</td>
+<td>8.799197</td>
+<td>...</td>
+<td>24.597132</td>
+<td>24.960747</td>
+<td>23.340748</td>
+<td>29.676611</td>
+<td>22.260555</td>
+<td>19.448368</td>
+<td>12.687781</td>
+<td>17.599251</td>
+<td>15.416300</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">N</th>
+<td>18.462433</td>
+<td>25.926758</td>
+<td>11.938848</td>
+<td>12.332626</td>
+<td>28.611496</td>
+<td>20.767591</td>
+<td>14.913534</td>
+<td>28.616005</td>
+<td>17.420960</td>
+<td>27.084261</td>
+<td>...</td>
+<td>0.000000</td>
+<td>19.324180</td>
+<td>7.580542</td>
+<td>19.788073</td>
+<td>10.776410</td>
+<td>13.261159</td>
+<td>25.619874</td>
+<td>29.981411</td>
+<td>22.550224</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P</th>
+<td>19.083326</td>
+<td>27.312201</td>
+<td>20.851585</td>
+<td>22.363162</td>
+<td>28.291862</td>
+<td>20.145725</td>
+<td>20.765900</td>
+<td>27.744302</td>
+<td>23.411609</td>
+<td>25.801083</td>
+<td>...</td>
+<td>19.324180</td>
+<td>0.000000</td>
+<td>20.001033</td>
+<td>28.278856</td>
+<td>16.696112</td>
+<td>17.105724</td>
+<td>24.659890</td>
+<td>30.363342</td>
+<td>24.694739</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Q</th>
+<td>19.461327</td>
+<td>27.016538</td>
+<td>11.273871</td>
+<td>8.935904</td>
+<td>27.837117</td>
+<td>23.307118</td>
+<td>14.389646</td>
+<td>28.779372</td>
+<td>12.381269</td>
+<td>26.292854</td>
+<td>...</td>
+<td>7.580542</td>
+<td>20.001033</td>
+<td>0.000000</td>
+<td>16.300134</td>
+<td>12.449408</td>
+<td>13.382975</td>
+<td>25.742964</td>
+<td>28.484868</td>
+<td>20.051376</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">R</th>
+<td>29.894757</td>
+<td>33.663847</td>
+<td>21.535519</td>
+<td>18.980827</td>
+<td>32.524010</td>
+<td>33.426858</td>
+<td>19.461579</td>
+<td>34.776820</td>
+<td>16.471912</td>
+<td>32.900377</td>
+<td>...</td>
+<td>19.788073</td>
+<td>28.278856</td>
+<td>16.300134</td>
+<td>0.000000</td>
+<td>24.334498</td>
+<td>23.602768</td>
+<td>32.849640</td>
+<td>31.215589</td>
+<td>24.343017</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">S</th>
+<td>10.715891</td>
+<td>22.000385</td>
+<td>13.592779</td>
+<td>16.066922</td>
+<td>27.225385</td>
+<td>13.828360</td>
+<td>16.819221</td>
+<td>26.230282</td>
+<td>20.806245</td>
+<td>24.287408</td>
+<td>...</td>
+<td>10.776410</td>
+<td>16.696112</td>
+<td>12.449408</td>
+<td>24.334498</td>
+<td>0.000000</td>
+<td>6.167702</td>
+<td>21.321638</td>
+<td>30.880924</td>
+<td>23.941856</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">T</th>
+<td>10.600212</td>
+<td>20.114841</td>
+<td>15.809162</td>
+<td>17.324399</td>
+<td>23.223101</td>
+<td>17.115369</td>
+<td>15.078192</td>
+<td>22.495364</td>
+<td>20.609675</td>
+<td>20.874809</td>
+<td>...</td>
+<td>13.261159</td>
+<td>17.105724</td>
+<td>13.382975</td>
+<td>23.602768</td>
+<td>6.167702</td>
+<td>0.000000</td>
+<td>17.554950</td>
+<td>27.092283</td>
+<td>20.496910</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">V</th>
+<td>14.435550</td>
+<td>13.842399</td>
+<td>28.758401</td>
+<td>27.976748</td>
+<td>14.060650</td>
+<td>23.954105</td>
+<td>20.613181</td>
+<td>7.080977</td>
+<td>31.602886</td>
+<td>8.152492</td>
+<td>...</td>
+<td>25.619874</td>
+<td>24.659890</td>
+<td>25.742964</td>
+<td>32.849640</td>
+<td>21.321638</td>
+<td>17.554950</td>
+<td>0.000000</td>
+<td>22.190822</td>
+<td>19.065321</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">W</th>
+<td>28.323295</td>
+<td>25.908648</td>
+<td>33.169889</td>
+<td>31.759465</td>
+<td>12.321010</td>
+<td>35.957174</td>
+<td>22.622245</td>
+<td>19.449383</td>
+<td>32.079634</td>
+<td>18.577124</td>
+<td>...</td>
+<td>29.981411</td>
+<td>30.363342</td>
+<td>28.484868</td>
+<td>31.215589</td>
+<td>30.880924</td>
+<td>27.092283</td>
+<td>22.190822</td>
+<td>0.000000</td>
+<td>14.294620</td>
+<td>53.935761</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Y</th>
+<td>23.341264</td>
+<td>22.289136</td>
+<td>25.982454</td>
+<td>24.054114</td>
+<td>14.091799</td>
+<td>30.544664</td>
+<td>15.307727</td>
+<td>19.319285</td>
+<td>25.243565</td>
+<td>16.909402</td>
+<td>...</td>
+<td>22.550224</td>
+<td>24.694739</td>
+<td>20.051376</td>
+<td>24.343017</td>
+<td>23.941856</td>
+<td>20.496910</td>
+<td>19.065321</td>
+<td>14.294620</td>
+<td>0.000000</td>
+<td>53.935761</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">*</th>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>...</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>53.935761</td>
+<td>0.000000</td>
+</tr>
+</tbody>
+</table>
+
+<p>21 rows × 21 columns</p>
+</div>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="generator-and-scorer" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="generator-and-scorer"><span class="header-section-number">3.3</span> Generator and Scorer</h2>
+<ul>
+<li><p>Now we can define the generator function with the following:</p>
+<div id="469872b5" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_genetic_code(sc_limit: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Creates a random genetic code config that maps all 64 codons to all </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">  20 amino acids and at least one stop codon.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">  Args:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">      sc_limit: The maximum number of stop codons allowed (the actual</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">                number will be chosen randomly between 1 and sc_limit).</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">  Returns:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">      A dictionary mapping each of the 64 codons to a single-letter </span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">      amino acid code or a stop codon ('*').</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">  Raises:</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">      ValueError: If sc_limit is not within a reasonable range (1 to 10).</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">  """</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Validate the stop codon limit to a sensible range</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">not</span> <span class="dv">1</span> <span class="op">&lt;=</span> sc_limit <span class="op">&lt;=</span> <span class="dv">10</span>:</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"sc_limit must be between 1 and 10 for practical genetic codes."</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the building blocks for the genetic code</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> [<span class="st">'A'</span>, <span class="st">'T'</span>, <span class="st">'G'</span>, <span class="st">'C'</span>]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  amino_acids <span class="op">=</span> <span class="bu">list</span>(<span class="st">"ACDEFGHIKLMNPQRSTVWY"</span>)  <span class="co"># 20 standard amino acids</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  stop_symbol <span class="op">=</span> <span class="st">'*'</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Generate all 64 possible codons</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  all_codons <span class="op">=</span> [<span class="st">''</span>.join(p) <span class="cf">for</span> p <span class="kw">in</span> product(bases, repeat<span class="op">=</span><span class="dv">3</span>)]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  random.shuffle(all_codons)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Determine the number of stop codons</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  num_stop_codons <span class="op">=</span> random.randint(<span class="dv">1</span>, sc_limit)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Create the pool of assignments (amino acids + stops)</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure all 20 amino acids are present at least once</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  assignments <span class="op">=</span> amino_acids.copy()</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add the stop codons</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  assignments.extend([stop_symbol] <span class="op">*</span> num_stop_codons)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fill the remaining slots with random amino acids to reach 64 total assignments</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  remaining_slots <span class="op">=</span> <span class="dv">64</span> <span class="op">-</span> <span class="bu">len</span>(assignments)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  assignments.extend(random.choices(amino_acids, k<span class="op">=</span>remaining_slots))</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Shuffle the assignments to ensure randomness</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  random.shuffle(assignments)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Create the dictionary by mapping codons to assignments</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  genetic_code <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(all_codons, assignments))</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> genetic_code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div></li>
+<li><p>And we can see that running this function generates us a nice randomly assigned genetic code:</p>
+<div id="b2f4e73c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test_code <span class="op">=</span> create_genetic_code(<span class="dv">2</span>) <span class="co"># with max 2 stop codons</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([test_code]) <span class="co"># display nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">CAA</th>
+<th data-quarto-table-cell-role="th">CTT</th>
+<th data-quarto-table-cell-role="th">CCT</th>
+<th data-quarto-table-cell-role="th">AGT</th>
+<th data-quarto-table-cell-role="th">CGC</th>
+<th data-quarto-table-cell-role="th">GCG</th>
+<th data-quarto-table-cell-role="th">ATG</th>
+<th data-quarto-table-cell-role="th">TTA</th>
+<th data-quarto-table-cell-role="th">GGA</th>
+<th data-quarto-table-cell-role="th">ACC</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">CCC</th>
+<th data-quarto-table-cell-role="th">TAC</th>
+<th data-quarto-table-cell-role="th">ACG</th>
+<th data-quarto-table-cell-role="th">TGG</th>
+<th data-quarto-table-cell-role="th">TAG</th>
+<th data-quarto-table-cell-role="th">AAG</th>
+<th data-quarto-table-cell-role="th">GAA</th>
+<th data-quarto-table-cell-role="th">TTT</th>
+<th data-quarto-table-cell-role="th">GTT</th>
+<th data-quarto-table-cell-role="th">GAC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>E</td>
+<td>V</td>
+<td>P</td>
+<td>R</td>
+<td>N</td>
+<td>Q</td>
+<td>E</td>
+<td>M</td>
+<td>H</td>
+<td>V</td>
+<td>...</td>
+<td>Y</td>
+<td>V</td>
+<td>H</td>
+<td>T</td>
+<td>I</td>
+<td>D</td>
+<td>S</td>
+<td>W</td>
+<td>E</td>
+<td>M</td>
+</tr>
+</tbody>
+</table>
+
+<p>1 rows × 64 columns</p>
+</div>
+</div>
+</div></li>
+<li><p>Next is the scorer function, defined as follows:</p>
+<div id="75aed423" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_gc(gc: <span class="bu">dict</span>) <span class="op">-&gt;</span> np.float64:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Calculates a 'robustness' score for a genetic code.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">  The score is the sum of physicochemical distances between amino acids </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">  resulting from all possible single-nucleotide point mutations across all </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">  64 codons. A lower score indicates a more robust code where mutations </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">  tend to result in similar amino acids.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">  Args:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">      gc: A dictionary mapping 64 codons to single-letter amino acid codes.</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">      dtable: A DataFrame containing the pairwise distances between amino acids,</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">              as created by the `construct_aa_table` function.</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">  Returns:</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">      A np.float64 value representing the total cost of all possible mutations.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">  Raises:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">      ValueError: If a codon in the genetic code is not found in the distance table.</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">  """</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> [<span class="st">'A'</span>, <span class="st">'T'</span>, <span class="st">'G'</span>, <span class="st">'C'</span>]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  total_distance_cost: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate all 64 codons</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  all_codons <span class="op">=</span> [<span class="st">''</span>.join(p) <span class="cf">for</span> p <span class="kw">in</span> product(bases, repeat<span class="op">=</span><span class="dv">3</span>)]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> original_codon <span class="kw">in</span> all_codons:</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get the amino acid for the original, unmutated codon</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      original_aa <span class="op">=</span> gc.get(original_codon)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> original_aa <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>          <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Codon '</span><span class="sc">{</span>original_codon<span class="sc">}</span><span class="ss">' not found in the provided genetic code."</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Iterate through each of the 3 positions in the codon</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>          original_base <span class="op">=</span> original_codon[i]</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Iterate through each possible mutation at that position</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> mutated_base <span class="kw">in</span> bases:</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>              <span class="co"># We only care about actual mutations, not silent changes</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> original_base <span class="op">!=</span> mutated_base:</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Construct the mutated codon</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>                  mutated_codon_list <span class="op">=</span> <span class="bu">list</span>(original_codon)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>                  mutated_codon_list[i] <span class="op">=</span> mutated_base</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                  mutated_codon <span class="op">=</span> <span class="st">""</span>.join(mutated_codon_list)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Get the amino acid for the new, mutated codon</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>                  mutated_aa <span class="op">=</span> gc.get(mutated_codon)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">if</span> mutated_aa <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>                      <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Mutated codon '</span><span class="sc">{</span>mutated_codon<span class="sc">}</span><span class="ss">' not found in the provided genetic code."</span>)</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Use aaSim to get the distance and add it to the total cost</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Note: We are directly using the dtable here as aaSim is just a lookup</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>                  distance: np.float64 <span class="op">=</span> dtable.at[original_aa, mutated_aa]</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>                  total_distance_cost <span class="op">+=</span> distance</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.float64(total_distance_cost)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div></li>
+<li><p>To ensure this function works, we will test the Standard Genetic Code against the baseline in the next section</p></li>
+</ul>
+</section>
+<section id="ensuring-baseline" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="ensuring-baseline"><span class="header-section-number">3.4</span> Ensuring Baseline</h2>
+<ul>
+<li><p>The baseline score for the SGC was defined in class as <code>9856.116</code>. In order to ensure nothing has gone wrong, we will test our functions to see if it returns the same score.</p></li>
+<li><p>Since we already have the SGC defined in <code>SGC</code> from the constants earlier, we will use that here.</p>
+<div id="8d2f9fae" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([SGC])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ATA</th>
+<th data-quarto-table-cell-role="th">ATC</th>
+<th data-quarto-table-cell-role="th">ATT</th>
+<th data-quarto-table-cell-role="th">ATG</th>
+<th data-quarto-table-cell-role="th">ACA</th>
+<th data-quarto-table-cell-role="th">ACC</th>
+<th data-quarto-table-cell-role="th">ACG</th>
+<th data-quarto-table-cell-role="th">ACT</th>
+<th data-quarto-table-cell-role="th">AAC</th>
+<th data-quarto-table-cell-role="th">AAT</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">TTA</th>
+<th data-quarto-table-cell-role="th">TTG</th>
+<th data-quarto-table-cell-role="th">TAC</th>
+<th data-quarto-table-cell-role="th">TAT</th>
+<th data-quarto-table-cell-role="th">TAA</th>
+<th data-quarto-table-cell-role="th">TAG</th>
+<th data-quarto-table-cell-role="th">TGC</th>
+<th data-quarto-table-cell-role="th">TGT</th>
+<th data-quarto-table-cell-role="th">TGA</th>
+<th data-quarto-table-cell-role="th">TGG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>I</td>
+<td>I</td>
+<td>I</td>
+<td>M</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>N</td>
+<td>N</td>
+<td>...</td>
+<td>L</td>
+<td>L</td>
+<td>Y</td>
+<td>Y</td>
+<td>*</td>
+<td>*</td>
+<td>C</td>
+<td>C</td>
+<td>*</td>
+<td>W</td>
+</tr>
+</tbody>
+</table>
+
+<p>1 rows × 64 columns</p>
+</div>
+</div>
+</div></li>
+<li><p>Scoring it provides us with the following:</p>
+<div id="f68c152f" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>score_gc(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>np.float64(9856.116291937447)</code></pre>
+</div>
+</div></li>
+<li><p>Hooray! We can see the code has scored the Standard Genetic Code equal to the baseline!! (to an even more precise figure!).</p></li>
+</ul>
+</section>
+</section>
+<section id="data" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Data</h1>
+<section id="comparing-random-codes-to-the-sgc" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="comparing-random-codes-to-the-sgc"><span class="header-section-number">4.1</span> Comparing Random Codes to the SGC</h2>
+<ul>
+<li><p>Let’s create a helper function to generate and test random GCs called <code>gen_and_score(times)</code>; where <code>times</code> is the amount of trials to run.</p>
+<div id="b5c51181" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_and_score(times: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> []</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">len</span>(scores) <span class="op">&lt;</span> times:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        gc <span class="op">=</span> create_genetic_code(STOP_CODON_LIMIT)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        scores.append(<span class="bu">float</span>(score_gc(gc)))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> scores</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div></li>
+<li><p>Now, let’s generate 1000 random genetic codes, score them, and plot them on a graph.</p>
+<div id="618fe16c" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="52007769" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-12-output-1.png" width="585" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>This is nice! We get a nice bell curve, and we can see the scores average between 12,000 and 15,000. These scores are MUCH higher than the SGC’s score, however. Let’s plot the SCG score as well to visualize this.</p>
+<div id="57bbf822" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-13-output-1.png" width="585" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>Our random codes score <em>significantly</em> worse than the standard genetic code. Let’s try generating more codes (5000) to try to brute-force optimize…</p>
+<div id="7df7df50" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="71634b84" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-15-output-1.png" width="593" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>We get a wider distribution with more attempts, however when compared to the SGC:</p>
+<div id="27df4bf0" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">60</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-16-output-1.png" width="614" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>We can clearly see that the Standard Genetic Code is extremely well optimized when compared to random genetic codes.</p></li>
+</ul>
+</section>
+</section>
+<section id="appendix" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Appendix</h1>
+<section id="assumptions" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="assumptions"><span class="header-section-number">5.1</span> Assumptions</h2>
 <ul>
 <li>A lookup table exists created from distances between amino acids from data in PCAs aaFeatureSpace.2025.Rds used in class</li>
 <li>I define my computable measure of tolerance of point mutations as a score that, for any genetic code, determines all possible point shift mutations for each codon, calculates the distances between the original and mutated amino acid (using lookup table) and sums the distances to return the score.</li>
-<li>I explain above how the function</li>
+<li>I explain above how the function create_genetic_code() creates a valid genetic code. To summarize: 20 amino acids are assigned to 20 codons, a random amount of stop codons (as specified) are added, the rest are filled with random amino acids.</li>
 </ul>
 </section>
-<section id="preparing-the-report" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="preparing-the-report"><span class="header-section-number">3.2</span> Preparing the report</h2>
+<section id="preparing-the-report" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="preparing-the-report"><span class="header-section-number">5.2</span> Preparing the report</h2>
 <ul>
 <li>Oct 6, 2025:</li>
 </ul>
