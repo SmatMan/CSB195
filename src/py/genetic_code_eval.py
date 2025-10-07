@@ -1,10 +1,12 @@
 import math
+import sys
 import pandas as pd
 import numpy as np
 import random
 from itertools import product
 
 BASE_DIR = "~/Documents/School/CSB195"
+STOP_CODON_LIMIT = 3
 
 SGC = {
     'ATA': 'I', 'ATC': 'I', 'ATT': 'I', 'ATG': 'M',
@@ -220,11 +222,35 @@ def score_gc(gc: dict) -> np.float64:
 
     return np.float64(total_distance_cost)
 
+def random_optimization() -> np.float64:
+    best: dict = create_genetic_code(STOP_CODON_LIMIT)
+    best_score = score_gc(best)
+    tries = 0
+    while True:
+        try:
+            tries += 1
+            test = create_genetic_code(STOP_CODON_LIMIT)
+            test_score = score_gc(test)
+            
+            if test_score < best_score:
+                best = test.copy()
+                best_score = test_score
+                print(f"New best! {best_score}")
+                print(best)
+        except KeyboardInterrupt:
+            print(f"{tries} total tries")
+            sys.exit()
+            
+    
+
 if __name__ == "__main__":
     # distance_table = construct_aa_table(dat=aaSimilarity)
     # # print(distance_table.to_string())
     # print(aaSim("A", "W", distance_table))
     # print(aaSim("W", "C", distance_table))
-    gc = create_genetic_code(3)
-    print(score_gc(gc))
+    
+    # gc = create_genetic_code(STOP_CODON_LIMIT)
+    # print(score_gc(gc))
+    
+    random_optimization()
     
