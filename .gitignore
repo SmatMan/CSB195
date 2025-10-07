@@ -17,3 +17,7 @@
 /dev/
 
 /.quarto/
+
+**/*.quarto_ipynb
+
+out/docs/Arjun_Mehandiratta_*_files

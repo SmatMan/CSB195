@@ -1,0 +1,94 @@
+---
+title: "Report 1"
+subtitle: "Comparing alternative genetic codes to the Standard Genetic Code"
+author: "Arjun Mehandiratta"
+date: last-modified
+format:
+  html:
+    theme: pulse
+    toc: true
+    number-sections: true
+    code-fold: false
+    include-in-header:
+      text:  |
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+          .version-info {
+            font-size: 70%;
+            color: #BBBBBB;
+            margin-top: -10px;
+          }
+          * {
+            font-family: "Inconsolata", monospace;
+            font-optical-sizing: auto;
+          }
+          .quarto-code-block {
+            background: #222;
+            color: #f8f8f2;
+            border-radius: 6px;
+            padding: 1em;
+            border: 1px solid #444;
+            font-size: 1em;
+          }
+          .quarto-code-block code {
+            background: none;
+            color: inherit;
+          }
+        </style>
+---
+
+::: version-info
+Last updated {{< meta date >}}.
+:::
+
+# Overview
+The goal of this project is to compare the Standard Genetic Code with randomly generated alternatives of the code. 
+I had a lot of fun with this and I find it very interesting to see how the SGC is very optimized when compared to 
+other randomly generated code. 
+
+# Specification
+- My final specification is below, I will summarize it briefly underneath.
+
+  ```
+  The goal of this project is to compare the Standard Genetic Code (SGC) to other, 
+  randomly generated codes that are biologically plausible. 
+  We will do so by the following general specification.
+
+
+  Variables:
+    - BASE_DIR = base directory of project
+    - aaSimilarity = PCAs of amino acid similarities
+    - dtable = lookup table of single letter amino acids showing distance from each other
+    - SGC = standard genetic code of form: {'CODON': "AMINO ACID"} 
+            where amino acids are in single letter form 
+  Functions:
+    - ALREADY BUILT! construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame
+      - Constructs a pandas dataframe from imported csv stored in aaSimilarity, 
+        containing a 21x21 matrix of Euclidean distances between amino acids
+        The function calculates the distance between 20 standard amino acids based on 
+        12 principal components and adds a 'STOP' codon.
+    - ALREADY BUILT! aaSim(aa1: str, aa2: str) -> np.float64
+      - Looks up the values in the dataframe constructed earlier in `dtable`
+        and returns the applicable stored distance between aa1, aa2; amino acids
+    - create_genetic_code(sc_limit: int) -> dict
+      - Creates a random genetic code config that maps all 64 codons to all 
+        20 amino acids (in single letter form) + at least one stop codon 
+        (allow 1-`sc_limit` stop codons).
+        Return as a python dict e.g. {'ATA': 'A', 'ATT': 'W'}
+    - score_gc(gc: dict) -> np.float64
+      - Provides a 'score' of the provided genetic code in `gc`. 
+      It must calculate the cost of every possible codon mutation (3 codon mutations 
+      per 3 codons), then use aaSim() between the gc-mapped amino acid of the original codon 
+      and the gc-mapped amino acid of the mutated codon 
+      to determine what the distance between each mutation is. 
+      Sum up the distances of every possible mutation and return as np.float64 
+  ```
+
+# Appendix
+## Assumptions
+- A lookup table exists created from distances between amino acids from data in PCAs aaFeatureSpace.2025.Rds used in class
+- I define my computable measure of tolerance of point mutations as a score that, for any genetic code, determines all possible point shift mutations for each codon, calculates the distances between the original and mutated amino acid (using lookup table) and sums the distances to return the score.
+- I explain above how the function
+
+## Preparing the report
+- Oct 6, 2025: 
