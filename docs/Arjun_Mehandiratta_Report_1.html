@@ -219,7 +219,7 @@ Functions:
 <h2 data-number="3.1" class="anchored" data-anchor-id="some-constants"><span class="header-section-number">3.1</span> Some constants</h2>
 <ul>
 <li><p>I import some packages and add some constants to begin. STOP_CODON_LIMIT determines the max of how many stop codons the generator will try to assign.</p>
-<div id="7be152e5" class="cell" data-execution_count="1">
+<div id="7be152e5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics <span class="im">as</span> stats</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -257,7 +257,7 @@ Functions:
 <ul class="page-columns page-full">
 <li><p>Since the original data was in .Rds format, I used R’s write.csv() command to export <code>dat/aaFeatureSpace.2025.Rds</code> to <code>dat/aaFeatureSpace.csv</code></p></li>
 <li><p>Python accesses this data and constructs a similarity lookup table using the following code:</p>
-<div id="0cdc78b4" class="cell" data-execution_count="2">
+<div id="0cdc78b4" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> construct_aa_table(dat: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
@@ -324,7 +324,7 @@ Functions:
 </details>
 </div></li>
 <li class="page-columns page-full"><p>Now the lookup table is constructed nicely and stored in <code>dtable</code>:</p>
-<div id="72b9b755" class="cell page-columns page-full" data-execution_count="3">
+<div id="72b9b755" class="cell page-columns page-full" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dtable</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display column-page" data-execution_count="3">
 <div>
@@ -875,7 +875,7 @@ Functions:
 <h2 data-number="3.3" class="anchored" data-anchor-id="generator-and-scorer"><span class="header-section-number">3.3</span> Generator and Scorer</h2>
 <ul>
 <li><p>Now we can define the generator function with the following:</p>
-<div id="dbcb92a4" class="cell" data-execution_count="4">
+<div id="dbcb92a4" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_genetic_code(sc_limit: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
@@ -931,7 +931,7 @@ Functions:
 </details>
 </div></li>
 <li><p>And we can see that running this function generates us a nice randomly assigned genetic code:</p>
-<div id="d7746142" class="cell" data-execution_count="5">
+<div id="d7746142" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test_code <span class="op">=</span> create_genetic_code(<span class="dv">2</span>) <span class="co"># with max 2 stop codons</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([test_code]) <span class="co"># display nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
@@ -998,7 +998,7 @@ Functions:
 </div>
 </div></li>
 <li><p>Next is the scorer function, defined as follows:</p>
-<div id="7b6d6638" class="cell" data-execution_count="6">
+<div id="7b6d6638" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_gc(gc: <span class="bu">dict</span>) <span class="op">-&gt;</span> np.float64:</span>
@@ -1066,7 +1066,7 @@ Functions:
 <ul class="page-columns page-full">
 <li><p>The baseline score for the SGC was defined in class as <code>9856.116</code>. In order to ensure nothing has gone wrong, we will test our functions to see if it returns the same score.</p></li>
 <li class="page-columns page-full"><p>Since we already have the SGC defined in <code>SGC</code> from the constants earlier, we will use that here.</p>
-<div id="241887ad" class="cell page-columns page-full" data-execution_count="7">
+<div id="241887ad" class="cell page-columns page-full" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([SGC])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display column-page" data-execution_count="7">
 <div>
@@ -1132,7 +1132,7 @@ Functions:
 </div>
 </div></li>
 <li><p>Scoring it provides us with the following:</p>
-<div id="7eef0dfe" class="cell" data-execution_count="8">
+<div id="7eef0dfe" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>score_gc(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>np.float64(9856.116291937447)</code></pre>
@@ -1148,7 +1148,7 @@ Functions:
 <h2 data-number="4.1" class="anchored" data-anchor-id="comparing-random-codes-to-the-sgc"><span class="header-section-number">4.1</span> Comparing Random Codes to the SGC</h2>
 <ul>
 <li><p>Let’s create a helper function to generate and test random GCs called <code>gen_and_score(times)</code>; where <code>times</code> is the amount of trials to run.</p>
-<div id="98dfe3ea" class="cell" data-execution_count="9">
+<div id="98dfe3ea" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_and_score(times: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
@@ -1160,11 +1160,11 @@ Functions:
 </details>
 </div></li>
 <li><p>Now, let’s generate 1000 random genetic codes, score them, and plot them on a graph.</p>
-<div id="aa1945bc" class="cell" data-execution_count="10">
+<div id="aa1945bc" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d2aa34a2" class="cell" data-execution_count="11">
+<div id="d2aa34a2" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
@@ -1179,7 +1179,7 @@ Functions:
 </div>
 </div></li>
 <li><p>This is nice! We get a nice bell curve, and we can see the scores average between 12,000 and 15,000. These scores are MUCH higher than the SGC’s score, however. Let’s plot the SCG score as well to visualize this.</p>
-<div id="1751e272" class="cell" data-execution_count="12">
+<div id="1751e272" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
@@ -1195,11 +1195,11 @@ Functions:
 </div>
 </div></li>
 <li><p>Our random codes score <em>significantly</em> worse than the standard genetic code. Let’s try generating more codes (5000) to try to brute-force optimize…</p>
-<div id="d55141de" class="cell" data-execution_count="13">
+<div id="d55141de" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">5000</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cdf7948c" class="cell" data-execution_count="14">
+<div id="cdf7948c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
@@ -1214,7 +1214,7 @@ Functions:
 </div>
 </div></li>
 <li><p>We get a wider distribution with more attempts, however when compared to the SGC:</p>
-<div id="579d30c4" class="cell" data-execution_count="15">
+<div id="579d30c4" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">60</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
@@ -1240,7 +1240,7 @@ Functions:
 <ul>
 <li><p>I tried to make an “optimization” function. Truly all it is is a while True loop that randomly generates codes, keeps score of the best one its found, and keeps going until the user keyboard interrupts. So it’s not really optimization, rather brute force.</p></li>
 <li><p>Regardless, let’s see how low of a score it can find. Since this quarto document doesn’t have a way to signal interrupt, I will limit the function to 10000 runs.</p>
-<div id="87dbce6c" class="cell" data-execution_count="16">
+<div id="87dbce6c" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_optimization(attempts) <span class="op">-&gt;</span> np.float64:</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  best: <span class="bu">dict</span> <span class="op">=</span> create_genetic_code(STOP_CODON_LIMIT)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  best_score <span class="op">=</span> score_gc(best)</span>
@@ -1302,7 +1302,7 @@ def random_optimization() -&gt; np.float64:
 
 I would like a function similar to this that, rather than creating random genetic codes, generates one first and then performs "simulated annealing" to optimize the code intelligently.</code></pre></li>
 <li class="page-columns page-full"><p>And running it results in:</p>
-<div id="0374c3e9" class="cell page-columns page-full" data-execution_count="17">
+<div id="0374c3e9" class="cell page-columns page-full" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulated_annealing_optimization(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    stop_codon_limit: <span class="bu">int</span>, </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    initial_temp: <span class="bu">float</span> <span class="op">=</span> <span class="fl">10000.0</span>, </span>
@@ -1548,7 +1548,7 @@ Final best score: 8796.178194016014</code></pre>
 <li><p>This is INCREDIBLY satisfying to watch happen, as once you hit a minimum point it <em>quickly</em> falls to a low value.</p></li>
 <li><p>On the plot above, it’s clear that finding a code optimized better than the SGC isn’t that hard. It’s important to note that this is only optimized by the standards of the scoring function. It’s possible that this code might suck by evolution’s standards.</p></li>
 <li class="page-columns page-full"><p>Let’s see what the codon map looks like:</p>
-<div id="53542d26" class="cell page-columns page-full" data-execution_count="18">
+<div id="53542d26" class="cell page-columns page-full" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_genetic_code_table(gc: <span class="bu">dict</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""Formats a genetic code dictionary into a standard 4x4 table."""</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> [<span class="st">'T'</span>, <span class="st">'C'</span>, <span class="st">'A'</span>, <span class="st">'G'</span>]</span>
@@ -1689,7 +1689,7 @@ Leu (G)</td>
 </div>
 </div></li>
 <li class="page-columns page-full"><p>And compared to the SCG:</p>
-<div id="bd9361d5" class="cell page-columns page-full" data-execution_count="19">
+<div id="bd9361d5" class="cell page-columns page-full" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>format_genetic_code_table(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display column-page" data-execution_count="19">
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
