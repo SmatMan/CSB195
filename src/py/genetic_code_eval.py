@@ -249,6 +249,83 @@ def gen_and_score(times: int) -> list:
         scores.append(float(score_gc(gc)))
     return scores
    
+def simulated_annealing_optimization(
+      stop_codon_limit: int, 
+      initial_temp: float = 10000.0, 
+      cooling_rate: float = 0.999, 
+      min_temp: float = 1e-4, 
+      max_iterations: int = 50000
+  ) -> tuple[list, list, list]:
+      """
+      Optimizes a genetic code using a simulated annealing algorithm to minimize mutation cost.
+
+      Args:
+          stop_codon_limit: The maximum number of stop codons for creating new codes.
+          initial_temp: The starting temperature for the annealing process.
+          cooling_rate: The rate at which the temperature decreases.
+          min_temp: The temperature at which to stop the process.
+          max_iterations: The maximum number of iterations to run.
+
+      Returns:
+          A tuple containing the final best score and a list of scores at each iteration.
+      """
+      # 1. Initialization
+      current_code = create_genetic_code(stop_codon_limit)
+      current_score = score_gc(current_code)
+      
+      best_code = current_code.copy()
+      best_score = current_score
+      
+      # List to track the score at every iteration
+      score_history = [current_score]
+      
+      print(f"Initial score: {best_score}")
+
+      T = initial_temp
+      iteration = 0
+      
+      try:
+          # 2. Main Loop
+          while T > min_temp and iteration < max_iterations:
+              iteration += 1
+
+              # 3. Generate a Neighbor State
+              new_code = current_code.copy()
+              codons = list(new_code.keys())
+              codon1, codon2 = random.sample(codons, 2)
+              new_code[codon1], new_code[codon2] = new_code[codon2], new_code[codon1]
+
+              # 4. Score the New State
+              new_score = score_gc(new_code)
+              
+              # 5. Decide Whether to Accept the New State
+              score_delta = new_score - current_score
+              
+              if score_delta < 0 or random.random() < np.exp(-score_delta / T):
+                  current_code = new_code
+                  current_score = new_score
+              
+              # Update the best-ever score if the current one is better
+              if current_score < best_score:
+                  best_score = current_score
+                  best_code = current_code.copy()
+                  print(f"Iter {iteration} | Temp {T:.4f} | New best score: {best_score:.4f}")
+
+              # Track the score of the accepted state for this iteration
+              score_history.append(float(current_score))
+
+              # 6. Cool Down
+              T *= cooling_rate
+
+      except KeyboardInterrupt:
+          print("\nOptimization stopped by user.")
+          sys.exit()
+
+      finally:
+          print(f"\nFinished after {iteration} iterations.")
+          print(f"Final best score: {best_score}")
+          return (best_score, score_history, best_code)
+    
 
 if __name__ == "__main__":
     # distance_table = construct_aa_table(dat=aaSimilarity)
@@ -261,6 +338,35 @@ if __name__ == "__main__":
     
     # random_optimization()
     
-    scores = gen_and_score(200)
-    print(len(scores))
-    print(stats.mean(scores))
+    runs = 10
+    overall_best_score = np.inf
+    overall_best_code = None
+    overall_best_history = None
+
+    try:
+        for i in range(1, runs + 1):
+            print(f"\nRun {i}/{runs}")
+            best_score, score_history, best_code = simulated_annealing_optimization(STOP_CODON_LIMIT)
+
+            # Store only if this run produced a strictly better score
+            if best_score < overall_best_score:
+                overall_best_score = best_score
+                overall_best_code = best_code.copy()
+                overall_best_history = score_history.copy() if score_history is not None else None
+                print(f">>> New overall best after run {i}: {overall_best_score:.4f}")
+
+    except:
+        print("\nRun loop interrupted by user.")
+        sys.exit()
+
+    finally:
+        print("\nOptimization complete.")
+        if overall_best_code is not None:
+            print(f"Overall best score: {overall_best_score:.4f}")
+            # Print a small sample of the best code
+            sample_items = list(overall_best_code.items())[:10]
+            print("Sample of best code (first 10 codon assignments):")
+            for codon, aa in sample_items:
+                print(f"  {codon} -> {aa}")
+        else:
+            print("No successful runs produced a stored best code.")

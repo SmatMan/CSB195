@@ -3,9 +3,13 @@ title: "Report 1"
 subtitle: "Comparing alternative genetic codes to the Standard Genetic Code"
 author: "Arjun Mehandiratta"
 date: last-modified
+execute: 
+  cache: true
+jupyter: python3
 format:
   html:
     theme: pulse
+    page-layout: full
     toc: true
     number-sections: true
     code-fold: false
@@ -43,7 +47,7 @@ I had a lot of fun with this and I find it very interesting to see how the SGC i
 other randomly generated code. 
 
 # Specification
-- My final specification is below, I will summarize it briefly underneath.
+- My specification for the primary experiment is below, I will summarize it briefly underneath.
 
   ```
   The goal of this project is to compare the Standard Genetic Code (SGC) to other, 
@@ -183,6 +187,7 @@ other randomly generated code.
   ```
 - Now the lookup table is constructed nicely and stored in `dtable`:
   ```{python}
+  #| column: page
   dtable
   ```
 ## Generator and Scorer
@@ -310,6 +315,7 @@ other randomly generated code.
 - The baseline score for the SGC was defined in class as `9856.116`. In order to ensure nothing has gone wrong, we will test our functions to see if it returns the same score.
 - Since we already have the SGC defined in `SGC` from the constants earlier, we will use that here. 
   ```{python}
+  #| column: page
   pd.DataFrame([SGC])
   ```
 - Scoring it provides us with the following:
@@ -375,11 +381,238 @@ other randomly generated code.
   ```
 - We can clearly see that the Standard Genetic Code is extremely well optimized when compared to random genetic codes.
 
+# Optimization *(extras)*
+## Random "Optimization"
+- I tried to make an "optimization" function. Truly all it is is a while True loop that randomly generates codes, keeps score of the best one its found, and keeps going until the user keyboard interrupts. So it's not really optimization, rather brute force.
+
+- Regardless, let's see how low of a score it can find. Since this quarto document doesn't have a way to signal interrupt, I will limit the function to 10000 runs.
+
+  ```{python}
+  def random_optimization(attempts) -> np.float64:
+    best: dict = create_genetic_code(STOP_CODON_LIMIT)
+    best_score = score_gc(best)
+    tries = 0
+    while tries <= attempts:
+      try:
+          tries += 1
+          test = create_genetic_code(STOP_CODON_LIMIT)
+          test_score = score_gc(test)
+          
+          if test_score < best_score:
+              best = test.copy()
+              best_score = test_score
+      except KeyboardInterrupt:
+          print(f"{tries} total tries")
+          sys.exit()
+    print(f"Best code: {best}")
+    print(f"Best score: {best_score}")
+
+  random_optimization(10000)
+  ```
+
+- I have no way of knowing the exact amount when the quarto doc renders, but in my testing I rarely got better than 11000. Let's try 100,000 attempts...
+
+  <!-- ```{python}
+  random_optimization(100000)
+  ``` -->
+
+- This has even more chance of randomly stumbling upon a valid genetic code, however in my testing it rarely gets any better than it did in 10,000 attempts. This *significantly* displays how unlikely the SGC's highly optimized score is. 
+
+- So let's try something better.
+
+## Simulated Annealing
+- We discussed simulated annealing in class. I could NOT write this function myself, so I got Gemini 2.5 Pro to write it for me. My prompt was:
+
+  ```
+  # PROMPT
+  I created an example "optimization" function that attempts to find the lowest score:
+
+  def random_optimization() -> np.float64:
+      best: dict = create_genetic_code(STOP_CODON_LIMIT)
+      best_score = score_gc(best)
+      tries = 0
+      while True:
+          try:
+              tries += 1
+              test = create_genetic_code(STOP_CODON_LIMIT)
+              test_score = score_gc(test)
+              
+              if test_score < best_score:
+                  best = test.copy()
+                  best_score = test_score
+                  print(f"New best! {best_score}")
+                  print(best)
+          except KeyboardInterrupt:
+              print(f"{tries} total tries")
+              sys.exit()
+
+  I would like a function similar to this that, rather than creating random genetic codes, generates one first and then performs "simulated annealing" to optimize the code intelligently.
+  ```
+  
+- And running it results in:
+
+  ```{python}
+  #| column: page
+  def simulated_annealing_optimization(
+      stop_codon_limit: int, 
+      initial_temp: float = 10000.0, 
+      cooling_rate: float = 0.999, 
+      min_temp: float = 1e-4, 
+      max_iterations: int = 50000
+  ) -> tuple[list, list, list]:
+      """
+      Optimizes a genetic code using a simulated annealing algorithm to minimize mutation cost.
+
+      Args:
+          stop_codon_limit: The maximum number of stop codons for creating new codes.
+          initial_temp: The starting temperature for the annealing process.
+          cooling_rate: The rate at which the temperature decreases.
+          min_temp: The temperature at which to stop the process.
+          max_iterations: The maximum number of iterations to run.
+
+      Returns:
+          A tuple containing the final best score and a list of scores at each iteration.
+      """
+      # 1. Initialization
+      current_code = create_genetic_code(stop_codon_limit)
+      current_score = score_gc(current_code)
+      
+      best_code = current_code.copy()
+      best_score = current_score
+      
+      # List to track the score at every iteration
+      score_history = [current_score]
+      
+      print(f"Initial score: {best_score}")
+
+      T = initial_temp
+      iteration = 0
+      
+      try:
+          # 2. Main Loop
+          while T > min_temp and iteration < max_iterations:
+              iteration += 1
+
+              # 3. Generate a Neighbor State
+              new_code = current_code.copy()
+              codons = list(new_code.keys())
+              codon1, codon2 = random.sample(codons, 2)
+              new_code[codon1], new_code[codon2] = new_code[codon2], new_code[codon1]
+
+              # 4. Score the New State
+              new_score = score_gc(new_code)
+              
+              # 5. Decide Whether to Accept the New State
+              score_delta = new_score - current_score
+              
+              if score_delta < 0 or random.random() < np.exp(-score_delta / T):
+                  current_code = new_code
+                  current_score = new_score
+              
+              # Update the best-ever score if the current one is better
+              if current_score < best_score:
+                  best_score = current_score
+                  best_code = current_code.copy()
+                  print(f"Iter {iteration} | Temp {T:.4f} | New best score: {best_score:.4f}")
+
+              # Track the score of the accepted state for this iteration
+              score_history.append(float(current_score))
+
+              # 6. Cool Down
+              T *= cooling_rate
+
+      except KeyboardInterrupt:
+          print("\nOptimization stopped by user.")
+
+      finally:
+          print(f"\nFinished after {iteration} iterations.")
+          print(f"Final best score: {best_score}")
+          return (best_score, score_history, best_code)
+    
+  best_found_score, score_runs, best_found_code = simulated_annealing_optimization(1)
+  
+  def plot_optimization_progress(runs: list, sgc_score: float):
+    plt.figure(figsize=(12, 7))
+    plt.plot(runs, linestyle='-', label='Score per Iteration')
+    plt.axhline(y=sgc_score, color='r', linestyle='--', label=f'SGC Score ({sgc_score:.2f})')
+    plt.title('Simulated Annealing Optimization Progress')
+    plt.xlabel('Iteration')
+    plt.ylabel('Genetic Code Score')
+    plt.legend()
+    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.show()
+
+  sgc_baseline_score = score_gc(SGC)
+  plot_optimization_progress(score_runs, sgc_baseline_score)
+
+  ```
+
+- This is INCREDIBLY satisfying to watch happen, as once you hit a minimum point it *quickly* falls to a low value. 
+- On the plot above, it's clear that finding a code optimized better than the SGC isn't that hard. It's important to note that this is only optimized by the standards of the scoring function. It's possible that this code might suck by evolution's standards.
+
+- Let's see what the codon map looks like:
+
+  ```{python}
+  #| column: page
+  def format_genetic_code_table(gc: dict) -> pd.DataFrame:
+    """Formats a genetic code dictionary into a standard 4x4 table."""
+    bases = ['T', 'C', 'A', 'G']
+    
+    aa_map = {
+        'A': 'Ala', 'R': 'Arg', 'N': 'Asn', 'D': 'Asp', 'C': 'Cys',
+        'E': 'Glu', 'Q': 'Gln', 'G': 'Gly', 'H': 'His', 'I': 'Ile',
+        'L': 'Leu', 'K': 'Lys', 'M': 'Met', 'F': 'Phe', 'P': 'Pro',
+        'S': 'Ser', 'T': 'Thr', 'W': 'Trp', 'Y': 'Tyr', 'V': 'Val',
+        '*': 'Stop'
+    }
+    
+    table_data = []
+    for first_base in bases:
+        row = []
+        for second_base in bases:
+            cell_text = []
+            for third_base in bases:
+                codon = first_base + second_base + third_base
+                single_letter_aa = gc.get(codon, '?')
+                three_letter_aa = aa_map.get(single_letter_aa, '???')
+                cell_text.append(f"{three_letter_aa} ({third_base})")
+            row.append("<br>".join(cell_text))
+        table_data.append(row)
+        
+    df = pd.DataFrame(table_data, 
+                      index=pd.Index(bases, name="First Base"), 
+                      columns=pd.Index(bases, name="Second Base"))
+    
+    from IPython.display import HTML
+    return HTML(df.to_html(escape=False))
+
+  format_genetic_code_table(best_found_code)
+  ```
+
+- And compared to the SCG:
+
+  ```{python}
+  #| column: page
+  format_genetic_code_table(SGC)
+  ```
+  
+# Conclusions
+- The standard genetic code is clearly much better than a randomly generated genetic code.
+- However, by the metric we have chosen, it is definitely possible to find a more optimized code, with the earlier function able to find codes with scores lower than 8800.
+  - It is definitely possible that these codes are not better than the SGC by other biological measures.
+
+
 # Appendix
 ## Assumptions
 - A lookup table exists created from distances between amino acids from data in PCAs aaFeatureSpace.2025.Rds used in class
 - I define my computable measure of tolerance of point mutations as a score that, for any genetic code, determines all possible point shift mutations for each codon, calculates the distances between the original and mutated amino acid (using lookup table) and sums the distances to return the score.
 - I explain above how the function create_genetic_code() creates a valid genetic code. To summarize: 20 amino acids are assigned to 20 codons, a random amount of stop codons (as specified) are added, the rest are filled with random amino acids.
 
+## AI Chat Links
+- [https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0)
+  - Model was always set to `Gemini 2.5 Pro`
+
 ## Preparing the report
-- Oct 6, 2025: 
+- Preparing the report was relatively straightforward. I used my AI assistant to help me convert the dataset from R to Python. Then I used its help along with some of my own code to begin making aaSim(), and other functions.
+- Writing the code (90% of the report) was the easiest part since I had access to AI. Using extremely specific prompts helped a lot, and it rarely gave me a poor result; likely because of prompts
+  - Working at a higher level is possible with AI but it helps to still understand the lower levels of what's going on to be specific in your prompts
