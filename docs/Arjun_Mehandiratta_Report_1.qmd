@@ -42,9 +42,8 @@ Last updated {{< meta date >}}.
 :::
 
 # Overview
-The goal of this project is to compare the Standard Genetic Code with randomly generated alternatives of the code. 
-I had a lot of fun with this and I find it very interesting to see how the SGC is very optimized when compared to 
-other randomly generated code. 
+- This project's goal is to evaluate how optimal the Standard Genetic Code **(SGC)** is when compared to other random genetic codes.
+- The analysis displays that the SGC is much more well optimized against point mutations than random alternatives.
 
 # Specification
 - My specification for the primary experiment is below, I will summarize it briefly underneath.
@@ -599,7 +598,15 @@ other randomly generated code.
 # Conclusions
 - The standard genetic code is clearly much better than a randomly generated genetic code.
 - However, by the metric we have chosen, it is definitely possible to find a more optimized code, with the earlier function able to find codes with scores lower than 8800.
-  - It is definitely possible that these codes are not better than the SGC by other biological measures.
+
+## Limitations of the experiment
+- It is definitely possible that these 'optimized' codes are not better than the SGC by other biological measures. A few of the limitations of this experiment (identified by the AI assistant) include:
+  - The scoring function only gives low scores to codes that protect against *single point mutations*. It does not prevent against other mutations, like frameshifts or indels.
+  - Amino acid similarity defined in `aaSim()` might not be the most optimal metric to measure. 
+  - Other biological pressures on the genetic code may exist, such as:
+    - translational efficiency of the code
+    - 
+
 
 
 # Appendix
@@ -616,3 +623,5 @@ other randomly generated code.
 - Preparing the report was relatively straightforward. I used my AI assistant to help me convert the dataset from R to Python. Then I used its help along with some of my own code to begin making aaSim(), and other functions.
 - Writing the code (90% of the report) was the easiest part since I had access to AI. Using extremely specific prompts helped a lot, and it rarely gave me a poor result; likely because of prompts
   - Working at a higher level is possible with AI but it helps to still understand the lower levels of what's going on to be specific in your prompts
+
+## References
