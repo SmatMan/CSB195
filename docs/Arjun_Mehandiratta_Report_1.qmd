@@ -117,6 +117,42 @@ Last updated {{< meta date >}}.
       'TGC': 'C', 'TGT': 'C', 'TGA': '*', 'TGG': 'W',
   }
   ```
+
+- Let's also create a function (with the help of my AI) to nicely display any genetic codes we create
+  ```{python}
+  def format_genetic_code_table(gc: dict) -> pd.DataFrame:
+    """Formats a genetic code dictionary into a standard 4x4 table."""
+    bases = ['T', 'C', 'A', 'G']
+    
+    aa_map = {
+        'A': 'Ala', 'R': 'Arg', 'N': 'Asn', 'D': 'Asp', 'C': 'Cys',
+        'E': 'Glu', 'Q': 'Gln', 'G': 'Gly', 'H': 'His', 'I': 'Ile',
+        'L': 'Leu', 'K': 'Lys', 'M': 'Met', 'F': 'Phe', 'P': 'Pro',
+        'S': 'Ser', 'T': 'Thr', 'W': 'Trp', 'Y': 'Tyr', 'V': 'Val',
+        '*': 'Stop'
+    }
+    
+    table_data = []
+    for first_base in bases:
+        row = []
+        for second_base in bases:
+            cell_text = []
+            for third_base in bases:
+                codon = first_base + second_base + third_base
+                single_letter_aa = gc.get(codon, '?')
+                three_letter_aa = aa_map.get(single_letter_aa, '???')
+                cell_text.append(f"{three_letter_aa} ({third_base})")
+            row.append("<br>".join(cell_text))
+        table_data.append(row)
+        
+    df = pd.DataFrame(table_data, 
+                      index=pd.Index(bases, name="First Base"), 
+                      columns=pd.Index(bases, name="Second Base"))
+    
+    from IPython.display import HTML
+    return HTML(df.to_html(escape=False))
+  ```
+
 ## Importing the data
 - Since the original data was in .Rds format, I used R's write.csv() command to export `dat/aaFeatureSpace.2025.Rds` to `dat/aaFeatureSpace.csv`
 - Python accesses this data and constructs a similarity lookup table using the following code:
@@ -315,7 +351,7 @@ Last updated {{< meta date >}}.
 - Since we already have the SGC defined in `SGC` from the constants earlier, we will use that here. 
   ```{python}
   #| column: page
-  pd.DataFrame([SGC])
+  format_genetic_code_table(SGC)
   ```
 - Scoring it provides us with the following:
   ```{python}
@@ -553,37 +589,6 @@ Last updated {{< meta date >}}.
 
   ```{python}
   #| column: page
-  def format_genetic_code_table(gc: dict) -> pd.DataFrame:
-    """Formats a genetic code dictionary into a standard 4x4 table."""
-    bases = ['T', 'C', 'A', 'G']
-    
-    aa_map = {
-        'A': 'Ala', 'R': 'Arg', 'N': 'Asn', 'D': 'Asp', 'C': 'Cys',
-        'E': 'Glu', 'Q': 'Gln', 'G': 'Gly', 'H': 'His', 'I': 'Ile',
-        'L': 'Leu', 'K': 'Lys', 'M': 'Met', 'F': 'Phe', 'P': 'Pro',
-        'S': 'Ser', 'T': 'Thr', 'W': 'Trp', 'Y': 'Tyr', 'V': 'Val',
-        '*': 'Stop'
-    }
-    
-    table_data = []
-    for first_base in bases:
-        row = []
-        for second_base in bases:
-            cell_text = []
-            for third_base in bases:
-                codon = first_base + second_base + third_base
-                single_letter_aa = gc.get(codon, '?')
-                three_letter_aa = aa_map.get(single_letter_aa, '???')
-                cell_text.append(f"{three_letter_aa} ({third_base})")
-            row.append("<br>".join(cell_text))
-        table_data.append(row)
-        
-    df = pd.DataFrame(table_data, 
-                      index=pd.Index(bases, name="First Base"), 
-                      columns=pd.Index(bases, name="Second Base"))
-    
-    from IPython.display import HTML
-    return HTML(df.to_html(escape=False))
 
   format_genetic_code_table(best_found_code)
   ```
