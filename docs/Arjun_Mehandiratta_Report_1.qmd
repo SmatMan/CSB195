@@ -179,7 +179,7 @@ Last updated {{< meta date >}}.<br>
     dist_series = pd.Series(counts).reindex(aa_order, fill_value=0)
 
     # Plotting
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=(12, 7))
     
     dist_series.plot(kind='bar', ax=ax, color='skyblue', edgecolor='black', width=0.8)
 
