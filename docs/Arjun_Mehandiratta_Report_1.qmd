@@ -106,6 +106,7 @@ Last updated {{< meta date >}}.
   import random
   from itertools import product
   import matplotlib.pyplot as plt
+  from collections import Counter
 
   BASE_DIR = "~/Documents/School/CSB195"
   STOP_CODON_LIMIT = 3
@@ -163,6 +164,62 @@ Last updated {{< meta date >}}.
     
     from IPython.display import HTML
     return HTML(df.to_html(escape=False))
+  ```
+
+- And a helper function to show the amino acid distribution for any inputted code.
+
+  ```{python}
+  def plot_aa_distribution(gc: dict, title: str = 'Amino Acid Distribution in Genetic Code'):
+    """
+    Renders a bar chart showing the frequency of each amino acid in a given genetic code.
+
+    The chart layout is kept consistent for easy comparison between different codes.
+
+    Args:
+        gc: A dictionary mapping 64 codons to single-letter amino acid codes (e.g., 'A', 'C', '*').
+        title: The title for the chart.
+    """
+    # Define a fixed order for amino acids to ensure consistent chart layouts
+    aa_order = list('ACDEFGHIKLMNPQRSTVWY') + ['*']
+
+    # Count the occurrences of each amino acid in the genetic code
+    counts = Counter(gc.values())
+
+    # Create a pandas Series from the counts, reindexing to the fixed order
+    # This ensures that all amino acids are present in the data, with a count of 0 if absent.
+    dist_series = pd.Series(counts).reindex(aa_order, fill_value=0)
+
+    # Plotting
+    fig, ax = plt.subplots(figsize=(14, 7))
+    
+    dist_series.plot(kind='bar', ax=ax, color='skyblue', edgecolor='black', width=0.8)
+
+    # --- Chart Formatting for Clarity and Consistency ---
+    ax.set_title(title, fontsize=16, weight='bold')
+    ax.set_xlabel('Amino Acid', fontsize=12)
+    ax.set_ylabel('Number of Codons (Frequency)', fontsize=12)
+    
+    # Set a fixed y-axis limit for direct visual comparison of codon counts.
+    # A safe upper limit is 8, as it's rare for one amino acid to have more codons.
+    ax.set_ylim(0, 8)
+    ax.set_yticks(range(9))
+    
+    # Rotate x-axis labels for better readability
+    plt.xticks(rotation=0)
+
+    # Add a grid for easier reading of values
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Add count labels on top of each bar
+    for i, count in enumerate(dist_series):
+        if count > 0:
+            ax.text(i, count + 0.1, str(count), ha='center', va='bottom', fontsize=10)
+
+    # Ensure a clean layout
+    plt.tight_layout()
+    
+    # Display the plot
+    plt.show()
   ```
 
 ## Importing the data
@@ -614,7 +671,24 @@ Last updated {{< meta date >}}.
   format_genetic_code_table(SGC)
   ```
   
-- Since the Quarto document generates the code output on each render, it is impossible to draw conclusions based on the specific code displayed in the current version. However, in my testing the optimized codes generally only posessed **1 stop codon**, 
+- Since the Quarto document generates the code output on each render, it is impossible to draw conclusions based on the specific code displayed in the current version. However, in my testing the optimized codes generally only posessed 1 stop codon, whereas the SGC has 3. 
+  - This would likely due to pressures outside the scope of this assignment, perhaps for preventing against frameshift mutations by providing more options of stop codons.
+
+- We can do some further analysis by comparing the amino acid frequency distribution between the SGC and the optimized code.
+
+- Let's look at the SGC's distribution:
+  ```{python}
+  plot_aa_distribution(SGC)
+  ```
+
+- We can see Leucine, Argenine and Serine have the most codon mappings in the SGC. What about our optimized code?
+
+  ```{python}
+  plot_aa_distribution(best_found_code)
+  ```
+
+- Since Quarto rendering would find a new optimized code every time, it's hard to predict what the distribution would exactly look like, but from my testing it's generally a random mix, and doesn't relate to the SGC's distribution in any meaningful way
+  - This may be because there are other pressures involved in evolution but not looked at in this experiment which cause the SGC's distribution to be optimal. 
 
 # Conclusions
 - The standard genetic code is clearly much better than a randomly generated genetic code. 
@@ -635,13 +709,14 @@ Last updated {{< meta date >}}.
 # Appendix
 ## AI Chat Links
 - [https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0)
+- [https://www.perplexity.ai/search/i-will-provide-you-with-a-copy-8zXgHDAnQC62cn7lSM2tTw#0](https://www.perplexity.ai/search/i-will-provide-you-with-a-copy-8zXgHDAnQC62cn7lSM2tTw#0)
   - Model was always set to `Gemini 2.5 Pro`
 
 ## Preparing the report
 - Preparing the report was relatively straightforward. I used my AI assistant to help me convert the dataset from R to Python. Then I used its help along with some of my own code to begin making aaSim(), and other functions.
 - Writing the code (90% of the report) was the easiest part since I had access to AI. Using extremely specific prompts helped a lot, and it rarely gave me a poor result; likely because of prompts
   - Working at a higher level is possible with AI but it definitely helps to still understand the lower levels of what's going on so you can be specific in your prompts
-- Most of my troubles were encountered in planning the assignment, and in understanding Quarto to translate what I wanted in my head into Quarto language. 
+- Most of my troubles were encountered in planning the assignment, and in understanding how Quarto works to translate what I wanted in my head into Quarto language. 
 - I decided against using AI to write Quarto-specific syntax since I feel like I'll be using this platform a lot in the future. I opted to read the docs instead! I've shockingly been missing that...
 
 ## References
