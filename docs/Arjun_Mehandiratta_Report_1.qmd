@@ -43,7 +43,8 @@ Last updated {{< meta date >}}.
 
 # Overview
 - This project's goal is to evaluate how optimal the Standard Genetic Code **(SGC)** is when compared to other random genetic codes.
-- The analysis displays that the SGC is much more well optimized against point mutations than random alternatives. Therefore, the SGC must have evolved under selection to prevent against such mutations.
+- The analysis displays that the SGC is much more well optimized against point mutations than random alternatives are. 
+- Therefore, the SGC must have evolved under selection to prevent against such mutations.
 
 # Specification
 - My specification for the primary experiment is below, I will summarize it briefly underneath.
@@ -295,7 +296,7 @@ Last updated {{< meta date >}}.
   dtable
   ```
 ## Generator and Scorer
-- Now we can define the generator function with the following:
+- Now we can define the generator function with the following: <sup>[AI source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#4)</sup>
   ```{python}
   #| code-fold: true
   def create_genetic_code(sc_limit: int) -> dict:
@@ -354,7 +355,7 @@ Last updated {{< meta date >}}.
   test_code = create_genetic_code(2) # with max 2 stop codons
   format_genetic_code_table(test_code) # display nicely
   ```
-- Next is the scorer function, defined as follows:
+- Next is the scorer function, defined as follows: <sup>[AI source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#6)</sup>
   ```{python}
   #| code-fold: true
   def score_gc(gc: dict) -> np.float64:
@@ -554,7 +555,7 @@ Last updated {{< meta date >}}.
   ```
   
 
-  - And running it results in:
+  - And running it results in: <sup>[AI Source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#7)</sup>
 
   ```{python}
   #| column: page
@@ -678,12 +679,14 @@ Last updated {{< meta date >}}.
 
 - Let's look at the SGC's distribution:
   ```{python}
+  #| column: page
   plot_aa_distribution(SGC)
   ```
 
 - We can see Leucine, Argenine and Serine have the most codon mappings in the SGC. What about our optimized code?
 
   ```{python}
+  #| column: page
   plot_aa_distribution(best_found_code)
   ```
 
