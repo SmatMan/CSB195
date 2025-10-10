@@ -38,7 +38,8 @@ format:
 ---
 
 ::: version-info
-Last updated {{< meta date >}}.
+Last updated {{< meta date >}}.<br>
+[Source](https://github.com/SmatMan/CSB195/blob/main/docs/Arjun_Mehandiratta_Report_1.qmd)
 :::
 
 # Overview
@@ -225,7 +226,7 @@ Last updated {{< meta date >}}.
 
 ## Importing the data
 - Since the original data was in .Rds format, I used R's write.csv() command to export `dat/aaFeatureSpace.2025.Rds` to `dat/aaFeatureSpace.csv`
-- Python accesses this data and constructs a similarity lookup table using the following code:
+- Python accesses this data and constructs a similarity lookup table using the following code: <sup>[AI Source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0)</sup>
   ```{python}
   #| code-fold: true
   def construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame:
@@ -699,7 +700,7 @@ Last updated {{< meta date >}}.
 - However, by the metric we have chosen, it is definitely possible to find a more optimized code, with the earlier function able to find codes with scores lower than 8800.
 
 ## Limitations of the experiment
-- It is definitely possible that these 'optimized' codes are not better than the SGC by other biological measures. A few of the limitations of this experiment (identified by the AI assistant) include:
+- It is definitely possible that these 'optimized' codes are not better than the SGC by other biological measures. A few of the limitations of this experiment (with some help identifying from the AI assistant) include:
   - The scoring function only gives low scores to codes that protect against *single point mutations*. It does not prevent against other mutations, like frameshifts or indels.
   - Amino acid similarity defined in `aaSim()` might not be the most optimal metric to measure. 
   - Other biological pressures on the genetic code may exist, such as:
@@ -720,7 +721,7 @@ Last updated {{< meta date >}}.
 - Writing the code (90% of the report) was the easiest part since I had access to AI. Using extremely specific prompts helped a lot, and it rarely gave me a poor result; likely because of prompts
   - Working at a higher level is possible with AI but it definitely helps to still understand the lower levels of what's going on so you can be specific in your prompts
 - Most of my troubles were encountered in planning the assignment, and in understanding how Quarto works to translate what I wanted in my head into Quarto language. 
-- I decided against using AI to write Quarto-specific syntax since I feel like I'll be using this platform a lot in the future. I opted to read the docs instead! I've shockingly been missing that...
+- I decided against using AI to write Quarto-specific syntax since I feel like I'll be using this platform a lot in the future. I opted to read the docs instead! I've shockingly missed doing that...
 
 ## References
 <ul>
