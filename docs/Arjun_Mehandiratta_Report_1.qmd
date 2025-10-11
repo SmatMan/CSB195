@@ -215,7 +215,6 @@ Last updated {{< meta date >}}.<br>
 - Since the original data was in .Rds format, I used R's write.csv() command to export `dat/aaFeatureSpace.2025.Rds` to `dat/aaFeatureSpace.csv`
 - Python accesses this data and constructs a similarity lookup table using the following code: <sup>[AI Source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0)</sup>
   ```{python}
-  #| code-fold: true
   def construct_aa_table(dat: pd.DataFrame) -> pd.DataFrame:
     """
     Constructs a 21x21 matrix of Euclidean distances between amino acids.
@@ -286,7 +285,6 @@ Last updated {{< meta date >}}.<br>
 ## Generator and Scorer
 - Now we can define the generator function with the following: <sup>[AI source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#4)</sup>
   ```{python}
-  #| code-fold: true
   def create_genetic_code(sc_limit: int) -> dict:
     """
     Creates a random genetic code config that maps all 64 codons to all 
@@ -345,7 +343,6 @@ Last updated {{< meta date >}}.<br>
   ```
 - Next is the scorer function, defined as follows: <sup>[AI source](https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#6)</sup>
   ```{python}
-  #| code-fold: true
   def score_gc(gc: dict) -> np.float64:
     """
     Calculates a 'robustness' score for a genetic code.
@@ -422,7 +419,6 @@ Last updated {{< meta date >}}.<br>
 ## Comparing Random Codes to the SGC
 - Let's create a helper function to generate and test random GCs called `gen_and_score(times)`; where `times` is the amount of trials to run.
   ```{python}
-  #| code-fold: true
   def gen_and_score(times: int) -> list:
       scores = []
       while len(scores) < times:

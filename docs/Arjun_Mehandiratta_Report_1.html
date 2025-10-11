@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arjun Mehandiratta">
-<meta name="dcterms.date" content="2025-10-10">
+<meta name="dcterms.date" content="2025-10-11">
 
 <title>Report 1</title>
 <style>
@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 10, 2025</p>
+      <p class="date">October 11, 2025</p>
     </div>
   </div>
   
@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="version-info">
-<p>Last updated October 10, 2025.<br> <a href="https://github.com/SmatMan/CSB195/blob/main/docs/Arjun_Mehandiratta_Report_1.qmd">Source</a></p>
+<p>Last updated October 11, 2025.<br> <a href="https://github.com/SmatMan/CSB195/blob/main/docs/Arjun_Mehandiratta_Report_1.qmd">Source</a></p>
 </div>
 <section id="overview" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
@@ -233,7 +233,7 @@ Functions:
 <h2 data-number="3.2" class="anchored" data-anchor-id="some-constants"><span class="header-section-number">3.2</span> Some constants</h2>
 <ul>
 <li><p>I import some packages and add some constants to begin. STOP_CODON_LIMIT determines the max of how many stop codons the generator will try to assign.</p>
-<div id="89e6aaeb" class="cell" data-execution_count="2">
+<div id="14a18bae" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics <span class="im">as</span> stats</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -266,7 +266,7 @@ Functions:
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></li>
 <li><p>Let’s also create a function (with the help of my AI) to nicely display any genetic codes we create</p>
-<div id="ad9780f5" class="cell" data-execution_count="3">
+<div id="135a39b9" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_genetic_code_table(gc: <span class="bu">dict</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""Formats a genetic code dictionary into a standard 4x4 table."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> [<span class="st">'T'</span>, <span class="st">'C'</span>, <span class="st">'A'</span>, <span class="st">'G'</span>]</span>
@@ -300,7 +300,7 @@ Functions:
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> HTML(df.to_html(escape<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></li>
 <li><p>And a helper function to show the amino acid distribution for any inputted code.</p>
-<div id="e546f01f" class="cell" data-execution_count="4">
+<div id="53af1b8a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_aa_distribution(gc: <span class="bu">dict</span>, title: <span class="bu">str</span> <span class="op">=</span> <span class="st">'Amino Acid Distribution in Genetic Code'</span>):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Renders a bar chart showing the frequency of each amino acid in a given genetic code.</span></span>
@@ -322,7 +322,7 @@ Functions:
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  dist_series <span class="op">=</span> pd.Series(counts).reindex(aa_order, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plotting</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  dist_series.plot(kind<span class="op">=</span><span class="st">'bar'</span>, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, width<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
@@ -360,9 +360,7 @@ Functions:
 <ul class="page-columns page-full">
 <li><p>Since the original data was in .Rds format, I used R’s write.csv() command to export <code>dat/aaFeatureSpace.2025.Rds</code> to <code>dat/aaFeatureSpace.csv</code></p></li>
 <li><p>Python accesses this data and constructs a similarity lookup table using the following code: <sup><a href="https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#0">AI Source</a></sup></p>
-<div id="47ae6004" class="cell" data-execution_count="5">
-<details class="code-fold">
-<summary>Show the code</summary>
+<div id="911b9e3f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> construct_aa_table(dat: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Constructs a 21x21 matrix of Euclidean distances between amino acids.</span></span>
@@ -424,12 +422,11 @@ Functions:
 <span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>aaSimilarity <span class="op">=</span> pd.read_csv(<span class="ss">f"</span><span class="sc">{</span>BASE_DIR<span class="sc">}</span><span class="ss">/dat/aaFeatureSpace.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>dtable <span class="op">=</span> construct_aa_table(aaSimilarity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div></li>
 <li class="page-columns page-full"><p>Now the lookup table is constructed nicely and stored in <code>dtable</code>:</p>
-<div id="4e348181" class="cell page-columns page-full" data-execution_count="6">
+<div id="71f75345" class="cell page-columns page-full" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dtable</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display column-page" data-execution_count="29">
+<div class="cell-output cell-output-display column-page" data-execution_count="5">
 <div>
 
 
@@ -978,9 +975,7 @@ Functions:
 <h2 data-number="3.4" class="anchored" data-anchor-id="generator-and-scorer"><span class="header-section-number">3.4</span> Generator and Scorer</h2>
 <ul>
 <li><p>Now we can define the generator function with the following: <sup><a href="https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#4">AI source</a></sup></p>
-<div id="18dfde58" class="cell" data-execution_count="7">
-<details class="code-fold">
-<summary>Show the code</summary>
+<div id="7baccc5a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_genetic_code(sc_limit: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Creates a random genetic code config that maps all 64 codons to all </span></span>
@@ -1031,13 +1026,12 @@ Functions:
 <span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  genetic_code <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(all_codons, assignments))</span>
 <span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> genetic_code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div></li>
 <li><p>And we can see that running this function generates us a nice randomly assigned genetic code:</p>
-<div id="dcd38e91" class="cell" data-execution_count="8">
+<div id="ee531714" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>test_code <span class="op">=</span> create_genetic_code(<span class="dv">2</span>) <span class="co"># with max 2 stop codons</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>format_genetic_code_table(test_code) <span class="co"># display nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <colgroup>
 <col style="width: 20%">
@@ -1065,88 +1059,86 @@ Functions:
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">T</th>
-<td>Pro (T)<br>
-Met (C)<br>
-Asn (A)<br>
-Tyr (G)</td>
-<td>Gly (T)<br>
-Thr (C)<br>
-Ile (A)<br>
-Trp (G)</td>
-<td>Val (T)<br>
-Trp (C)<br>
-Ala (A)<br>
-Gln (G)</td>
+<td>Cys (T)<br>
+His (C)<br>
+Cys (A)<br>
+Glu (G)</td>
 <td>Glu (T)<br>
 Arg (C)<br>
-Trp (A)<br>
-Gly (G)</td>
+Leu (A)<br>
+Pro (G)</td>
+<td>Ala (T)<br>
+Thr (C)<br>
+Ile (A)<br>
+Glu (G)</td>
+<td>Thr (T)<br>
+Met (C)<br>
+Leu (A)<br>
+Cys (G)</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">C</th>
-<td>* (T)<br>
+<td>Cys (T)<br>
 Asn (C)<br>
-Gly (A)<br>
-Tyr (G)</td>
-<td>His (T)<br>
-Ile (C)<br>
-Pro (A)<br>
-Gly (G)</td>
-<td>Glu (T)<br>
-Ile (C)<br>
-Tyr (A)<br>
-His (G)</td>
-<td>Ile (T)<br>
-Leu (C)<br>
-Pro (A)<br>
-Arg (G)</td>
+Asp (A)<br>
+Trp (G)</td>
+<td>Asp (T)<br>
+Asn (C)<br>
+Leu (A)<br>
+Ala (G)</td>
+<td>Pro (T)<br>
+Asn (C)<br>
+Arg (A)<br>
+Gln (G)</td>
+<td>Leu (T)<br>
+Asp (C)<br>
+His (A)<br>
+Pro (G)</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">A</th>
-<td>Phe (T)<br>
-Val (C)<br>
-Thr (A)<br>
-Ser (G)</td>
-<td>Ile (T)<br>
-Cys (C)<br>
-Ser (A)<br>
-Trp (G)</td>
 <td>Ala (T)<br>
-Leu (C)<br>
-Lys (A)<br>
-Phe (G)</td>
-<td>Gly (T)<br>
-Cys (C)<br>
+Val (C)<br>
+* (A)<br>
+Ile (G)</td>
+<td>Phe (T)<br>
+Ser (C)<br>
 Tyr (A)<br>
-Arg (G)</td>
+His (G)</td>
+<td>Gly (T)<br>
+Ser (C)<br>
+Gln (A)<br>
+Pro (G)</td>
+<td>Asn (T)<br>
+Asp (C)<br>
+Leu (A)<br>
+Ala (G)</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">G</th>
-<td>Trp (T)<br>
-Phe (C)<br>
-Gln (A)<br>
-Ala (G)</td>
-<td>Met (T)<br>
-Val (C)<br>
-Gln (A)<br>
-Asp (G)</td>
-<td>Glu (T)<br>
-Gln (C)<br>
-Ala (A)<br>
-Glu (G)</td>
+<td>Pro (T)<br>
+* (C)<br>
+Gly (A)<br>
+Ile (G)</td>
 <td>Lys (T)<br>
-Asn (C)<br>
-Ser (A)<br>
-Gln (G)</td>
+Val (C)<br>
+Val (A)<br>
+Lys (G)</td>
+<td>Ser (T)<br>
+Ser (C)<br>
+Pro (A)<br>
+Leu (G)</td>
+<td>Glu (T)<br>
+Ala (C)<br>
+Val (A)<br>
+His (G)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div></li>
 <li><p>Next is the scorer function, defined as follows: <sup><a href="https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#6">AI source</a></sup></p>
-<div id="8a5bf9aa" class="cell" data-execution_count="9">
-<details class="code-fold">
-<summary>Show the code</summary>
+<div id="890190f9" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_gc(gc: <span class="bu">dict</span>) <span class="op">-&gt;</span> np.float64:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Calculates a 'robustness' score for a genetic code.</span></span>
@@ -1202,7 +1194,6 @@ Gln (G)</td>
 <span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>                  total_distance_cost <span class="op">+=</span> distance</span>
 <span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.float64(total_distance_cost)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div></li>
 <li><p>To ensure this function works, we will test the Standard Genetic Code against the baseline in the next section</p></li>
 </ul>
@@ -1212,9 +1203,9 @@ Gln (G)</td>
 <ul class="page-columns page-full">
 <li><p>The baseline score for the SGC was defined in class as <code>9856.116</code>. In order to ensure nothing has gone wrong, we will test our functions to see if it returns the same score.</p></li>
 <li class="page-columns page-full"><p>Since we already have the SGC defined in <code>SGC</code> from the constants earlier, we will use that here.</p>
-<div id="c41d9a9d" class="cell page-columns page-full" data-execution_count="10">
+<div id="e60861f2" class="cell page-columns page-full" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>format_genetic_code_table(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display column-page" data-execution_count="33">
+<div class="cell-output cell-output-display column-page" data-execution_count="9">
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <colgroup>
 <col style="width: 20%">
@@ -1321,9 +1312,9 @@ Gly (G)</td>
 </div>
 </div></li>
 <li><p>Scoring it provides us with the following:</p>
-<div id="705486e5" class="cell" data-execution_count="11">
+<div id="8ee1be47" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>score_gc(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>np.float64(9856.116291937447)</code></pre>
 </div>
 </div></li>
@@ -1337,23 +1328,20 @@ Gly (G)</td>
 <h2 data-number="4.1" class="anchored" data-anchor-id="comparing-random-codes-to-the-sgc"><span class="header-section-number">4.1</span> Comparing Random Codes to the SGC</h2>
 <ul>
 <li><p>Let’s create a helper function to generate and test random GCs called <code>gen_and_score(times)</code>; where <code>times</code> is the amount of trials to run.</p>
-<div id="2d7ea837" class="cell" data-execution_count="12">
-<details class="code-fold">
-<summary>Show the code</summary>
+<div id="3f0ff3a5" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_and_score(times: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> []</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">len</span>(scores) <span class="op">&lt;</span> times:</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        gc <span class="op">=</span> create_genetic_code(STOP_CODON_LIMIT)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        scores.append(<span class="bu">float</span>(score_gc(gc)))</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> scores</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div></li>
 <li><p>Now, let’s generate 1000 random genetic codes, score them, and plot them on a graph.</p>
-<div id="932a671d" class="cell" data-execution_count="13">
+<div id="016ab39b" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f4286d40" class="cell" data-execution_count="14">
+<div id="30dec47e" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
@@ -1368,7 +1356,7 @@ Gly (G)</td>
 </div>
 </div></li>
 <li><p>This is nice! We get a nice bell curve, and we can see the scores average between 12,000 and 15,000. These scores are MUCH higher than the SGC’s score, however. Let’s plot the SCG score as well to visualize this.</p>
-<div id="e0755b1d" class="cell" data-execution_count="15">
+<div id="298d99fb" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores w/ SGC (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
@@ -1384,11 +1372,11 @@ Gly (G)</td>
 </div>
 </div></li>
 <li><p>Our random codes score <em>significantly</em> worse than the standard genetic code. Let’s try generating more codes (5000) to try to brute-force optimize…</p>
-<div id="7a84e536" class="cell" data-execution_count="16">
+<div id="74c5f90f" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>attempts <span class="op">=</span> <span class="dv">5000</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> gen_and_score(attempts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="e3c368bc" class="cell" data-execution_count="17">
+<div id="6babf449" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Score'</span>)</span>
@@ -1397,13 +1385,13 @@ Gly (G)</td>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-17-output-1.png" width="593" height="449" class="figure-img"></p>
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-17-output-1.png" width="604" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div></li>
 <li><p>We get a wider distribution with more attempts, however when compared to the SGC:</p>
-<div id="1d7d7c43" class="cell" data-execution_count="18">
+<div id="73b9bacc" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scores.append(score_gc(SGC))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plt.hist(scores, bins<span class="op">=</span><span class="dv">60</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Distribution of Genetic Code Scores w/ SGC (n=</span><span class="sc">{</span>attempts<span class="sc">}</span><span class="ss">)'</span>)</span>
@@ -1413,7 +1401,7 @@ Gly (G)</td>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-18-output-1.png" width="614" height="449" class="figure-img"></p>
+<p><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-18-output-1.png" width="600" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1429,7 +1417,7 @@ Gly (G)</td>
 <ul>
 <li><p>I tried to make an “optimization” function. Truly all it is is a while True loop that randomly generates codes, keeps score of the best one its found, and keeps going until the user keyboard interrupts. So it’s not really optimization, rather brute force.</p></li>
 <li><p>Regardless, let’s see how low of a score it can find. Since this quarto document doesn’t have a way to signal interrupt, I will limit the function to 10000 runs.</p>
-<div id="542ca25b" class="cell" data-execution_count="19">
+<div id="7266ebe2" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_optimization(attempts) <span class="op">-&gt;</span> np.float64:</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  best: <span class="bu">dict</span> <span class="op">=</span> create_genetic_code(STOP_CODON_LIMIT)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  best_score <span class="op">=</span> score_gc(best)</span>
@@ -1451,16 +1439,16 @@ Gly (G)</td>
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>random_optimization(<span class="dv">10000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Best code: {'TTT': 'T', 'GGT': 'V', 'AAT': 'I', 'GCT': 'H', 'AAA': 'I', 'ACT': 'P', 'TGC': 'I', 'AGC': 'E', 'GTG': 'Q', 'TAG': 'G', 'TGG': 'K', 'GGA': 'F', 'ACA': 'T', 'TTA': 'K', 'CGA': 'R', 'ATC': 'M', 'CCC': 'P', 'CCA': 'I', 'AAG': 'L', 'TGA': 'P', 'CCT': 'E', 'ACG': 'P', 'TCG': 'N', 'GCC': 'W', 'ATA': 'A', 'CAA': 'F', 'CGT': 'K', 'CGC': 'E', 'GTA': 'Q', 'TGT': 'E', 'CAC': 'H', 'AGA': 'K', 'ATT': 'N', 'CCG': 'G', 'CGG': '*', 'GAG': 'N', 'GCA': 'T', 'AGG': 'C', 'GAA': 'A', 'TAC': 'M', 'AAC': 'V', 'GAC': 'Y', 'GGC': 'M', 'GTT': 'K', 'TTG': 'N', 'TCC': 'S', 'CTG': 'T', 'CAG': 'S', 'GGG': 'H', 'CTT': 'Q', 'GTC': 'M', 'TAT': 'D', 'TCA': 'S', 'TTC': 'T', 'TAA': 'C', 'GAT': 'D', 'ATG': 'D', 'CAT': 'E', 'CTC': 'W', 'ACC': 'S', 'GCG': 'D', 'CTA': 'A', 'TCT': 'S', 'AGT': 'N'}
-Best score: 11420.356037821826</code></pre>
+<pre><code>Best code: {'TCC': 'S', 'GTG': 'D', 'CCG': 'I', 'CGC': 'K', 'AGG': 'A', 'TGG': 'S', 'CGA': 'M', 'GGC': 'H', 'CAC': 'E', 'TTC': 'N', 'AAG': 'S', 'GAA': 'G', 'TTT': 'D', 'TAA': 'S', 'GGT': 'P', 'GCG': 'L', 'TAT': 'C', 'AGT': 'A', 'TTA': 'M', 'GTC': 'E', 'ATC': 'W', 'GAT': '*', 'TTG': 'H', 'ACG': 'I', 'GCC': 'R', 'ATG': 'D', 'CAT': 'C', 'GTT': 'Q', 'TGC': 'F', 'ACT': 'G', 'GAG': 'L', 'GTA': 'T', 'AAT': 'T', 'CCC': 'L', 'TCT': 'I', 'ATA': 'T', 'GGA': 'E', 'CCT': 'Y', 'TAC': 'A', 'CTG': 'S', 'AAC': 'Q', 'TCG': 'G', 'AAA': 'S', 'GCA': 'H', 'CAG': 'C', 'TCA': 'H', 'CGT': 'V', 'CTA': 'Q', 'CTT': 'S', 'CCA': 'A', 'TGT': 'P', 'CTC': 'T', 'CGG': 'A', 'AGC': 'C', 'GGG': 'S', 'ACC': 'V', 'TAG': 'G', 'TGA': 'G', 'ACA': 'N', 'GCT': 'L', 'GAC': 'Y', 'AGA': 'Q', 'CAA': 'A', 'ATT': 'E'}
+Best score: 11239.554995803372</code></pre>
 </div>
 </div></li>
 <li><p>I have no way of knowing the exact amount when the quarto doc renders, but in my testing I rarely got better than 11000. Let’s try 100,000 attempts…</p>
-<div id="a901a049" class="cell" data-execution_count="20">
+<div id="2ed1e27e" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>random_optimization(<span class="dv">100000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Best code: {'CGG': 'N', 'AAG': 'I', 'AAC': 'G', 'TAT': 'E', 'GTG': 'L', 'GGC': 'H', 'CTT': '*', 'TTC': 'F', 'TGC': 'F', 'TGA': 'L', 'GTT': 'Q', 'CCT': 'Q', 'GGG': 'N', 'ATT': 'A', 'AGT': 'I', 'ACC': 'N', 'GAA': 'M', 'CGT': 'I', 'CAA': 'K', 'AAT': 'W', 'CGC': 'H', 'TCG': 'C', 'TTT': 'E', 'TGG': 'Y', 'CCC': 'S', 'TCC': 'K', 'GGA': 'P', 'TAC': 'T', 'TAG': 'M', 'ATA': 'D', 'CTC': 'L', 'ACA': 'T', 'ACT': 'Q', 'CCG': 'S', 'GAG': 'C', 'TAA': 'M', 'GTC': 'H', 'GAT': 'M', 'GAC': 'R', 'ACG': 'A', 'GCT': 'T', 'GTA': 'Y', 'AGA': 'R', 'ATG': 'Y', 'AGG': 'N', 'CAT': 'D', 'CCA': 'L', 'GGT': 'V', 'CGA': 'L', 'TTG': 'M', 'GCA': 'S', 'TCA': 'A', 'CAG': 'M', 'AGC': 'Q', 'AAA': 'T', 'TTA': 'A', 'GCG': 'A', 'ATC': 'S', 'CTG': 'M', 'TGT': 'L', 'TCT': 'Q', 'CTA': 'F', 'CAC': 'S', 'GCC': 'E'}
-Best score: 10901.939353916418</code></pre>
+<pre><code>Best code: {'CCA': 'K', 'TGT': 'V', 'GCC': 'L', 'TTG': 'C', 'AAT': 'K', 'TAC': 'Q', 'ATC': 'P', 'ACC': 'H', 'ATT': 'E', 'GGA': 'I', 'TTT': 'M', 'GTT': 'F', 'ACA': 'Q', 'CGA': 'C', 'GCG': 'S', 'TCA': 'T', 'TGA': 'A', 'TCG': 'Q', 'AGA': 'W', 'TGG': 'S', 'CGG': 'C', 'TCT': 'V', 'CCG': 'N', 'ACG': 'S', 'CGC': 'N', 'GGT': 'I', 'CTT': 'N', 'GTG': 'H', 'AGG': 'E', 'GTA': 'A', 'ATG': 'E', 'CAC': 'H', 'TTC': 'D', 'AGC': 'H', 'CAA': 'V', 'CTG': 'S', 'CGT': 'R', 'GAG': 'D', 'GCA': 'Y', 'TCC': 'Q', 'CTA': 'Y', 'CCT': 'G', 'TGC': 'L', 'ACT': '*', 'AAC': 'K', 'GAT': 'M', 'CTC': 'Y', 'GAC': 'V', 'GAA': 'L', 'CAG': 'Q', 'AAA': 'S', 'AGT': 'N', 'GCT': 'Q', 'TAT': 'Y', 'TAG': 'P', 'TTA': 'T', 'GGG': 'A', 'CAT': 'Q', 'TAA': 'S', 'CCC': 'K', 'ATA': 'Q', 'AAG': 'Q', 'GGC': 'T', 'GTC': 'D'}
+Best score: 11174.35970946876</code></pre>
 </div>
 </div></li>
 <li><p>This has even more chance of randomly stumbling upon a valid genetic code, however in my testing it rarely gets any better than it did in 10,000 attempts. This <em>significantly</em> displays how unlikely the SGC’s highly optimized score is.</p></li>
@@ -1497,7 +1485,7 @@ I would like a function similar to this that, rather than creating random geneti
 <ul>
 <li>And running it results in: <sup><a href="https://www.perplexity.ai/search/create-a-python-function-const-Y8zPZAC5ReKfUI1nNXVnYg#7">AI Source</a></sup></li>
 </ul>
-<div id="0a953dfd" class="cell page-columns page-full" data-execution_count="21">
+<div id="ca13f548" class="cell page-columns page-full" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulated_annealing_optimization(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    stop_codon_limit: <span class="bu">int</span>, </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    initial_temp: <span class="bu">float</span> <span class="op">=</span> <span class="fl">10000.0</span>, </span>
@@ -1590,122 +1578,138 @@ I would like a function similar to this that, rather than creating random geneti
 <span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a>sgc_baseline_score <span class="op">=</span> score_gc(SGC)</span>
 <span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a>plot_optimization_progress(score_runs, sgc_baseline_score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Initial score: 12372.079401860823
-Iter 15 | Temp 9860.9064 | New best score: 12371.8847
-Iter 212 | Temp 8096.8858 | New best score: 12351.4544
-Iter 256 | Temp 7748.1764 | New best score: 12311.5163
-Iter 257 | Temp 7740.4282 | New best score: 12179.7363
-Iter 258 | Temp 7732.6878 | New best score: 12145.6108
-Iter 698 | Temp 4979.0363 | New best score: 12117.9525
-Iter 883 | Temp 4137.7154 | New best score: 12047.0104
-Iter 899 | Temp 4072.0062 | New best score: 12037.7607
-Iter 1590 | Temp 2039.6741 | New best score: 11920.5708
-Iter 2064 | Temp 1269.4109 | New best score: 11761.9230
-Iter 4112 | Temp 163.5769 | New best score: 11747.2051
-Iter 4116 | Temp 162.9236 | New best score: 11679.7306
-Iter 4120 | Temp 162.2729 | New best score: 11665.2736
-Iter 4126 | Temp 161.3017 | New best score: 11631.1224
-Iter 4132 | Temp 160.3363 | New best score: 11539.4542
-Iter 4597 | Temp 100.6894 | New best score: 11506.9874
-Iter 4816 | Temp 80.8771 | New best score: 11426.0930
-Iter 4817 | Temp 80.7963 | New best score: 11371.8591
-Iter 4820 | Temp 80.5541 | New best score: 11357.0222
-Iter 4823 | Temp 80.3127 | New best score: 11344.2659
-Iter 4826 | Temp 80.0720 | New best score: 11295.0432
-Iter 4829 | Temp 79.8320 | New best score: 11255.5136
-Iter 5199 | Temp 55.1325 | New best score: 11250.5399
-Iter 5209 | Temp 54.5837 | New best score: 11248.2436
-Iter 5244 | Temp 52.7054 | New best score: 11189.6858
-Iter 5245 | Temp 52.6527 | New best score: 11112.4823
-Iter 5250 | Temp 52.3899 | New best score: 11086.7683
-Iter 5255 | Temp 52.1285 | New best score: 11070.5808
-Iter 5258 | Temp 51.9723 | New best score: 10967.0100
-Iter 5381 | Temp 45.9544 | New best score: 10928.6566
-Iter 5446 | Temp 43.0609 | New best score: 10912.1827
-Iter 5449 | Temp 42.9319 | New best score: 10837.8828
-Iter 5460 | Temp 42.4620 | New best score: 10816.4406
-Iter 5488 | Temp 41.2890 | New best score: 10808.8015
-Iter 5557 | Temp 38.5348 | New best score: 10752.8332
-Iter 5574 | Temp 37.8849 | New best score: 10743.7261
-Iter 5590 | Temp 37.2832 | New best score: 10714.5227
-Iter 5868 | Temp 28.2306 | New best score: 10713.8604
-Iter 5872 | Temp 28.1178 | New best score: 10690.8884
-Iter 5917 | Temp 26.8799 | New best score: 10598.3325
-Iter 5941 | Temp 26.2422 | New best score: 10560.3261
-Iter 5947 | Temp 26.0851 | New best score: 10483.9403
-Iter 5955 | Temp 25.8772 | New best score: 10386.7225
-Iter 6061 | Temp 23.2733 | New best score: 10380.2706
-Iter 6063 | Temp 23.2268 | New best score: 10370.4082
-Iter 6067 | Temp 23.1340 | New best score: 10345.4300
-Iter 6079 | Temp 22.8580 | New best score: 10343.1673
-Iter 6113 | Temp 22.0935 | New best score: 10289.9151
-Iter 6158 | Temp 21.1208 | New best score: 10252.8197
-Iter 6162 | Temp 21.0365 | New best score: 10232.9317
-Iter 6180 | Temp 20.6610 | New best score: 10204.1849
-Iter 6187 | Temp 20.5168 | New best score: 10162.7808
-Iter 6194 | Temp 20.3736 | New best score: 10133.7249
-Iter 6216 | Temp 19.9301 | New best score: 10114.5148
-Iter 6265 | Temp 18.9766 | New best score: 10106.0416
-Iter 6386 | Temp 16.8129 | New best score: 10062.5382
-Iter 6389 | Temp 16.7625 | New best score: 10014.0053
-Iter 6435 | Temp 16.0085 | New best score: 10001.2224
-Iter 6469 | Temp 15.4731 | New best score: 9970.7323
-Iter 6523 | Temp 14.6593 | New best score: 9927.6565
-Iter 6577 | Temp 13.8883 | New best score: 9913.5893
-Iter 6578 | Temp 13.8745 | New best score: 9898.7170
-Iter 6604 | Temp 13.5182 | New best score: 9889.1792
-Iter 6819 | Temp 10.9018 | New best score: 9889.0088
-Iter 6842 | Temp 10.6538 | New best score: 9886.0255
-Iter 6854 | Temp 10.5267 | New best score: 9875.2984
-Iter 6860 | Temp 10.4637 | New best score: 9849.5208
-Iter 6913 | Temp 9.9233 | New best score: 9842.7831
-Iter 6961 | Temp 9.4580 | New best score: 9832.7832
-Iter 6972 | Temp 9.3545 | New best score: 9828.7113
-Iter 7002 | Temp 9.0779 | New best score: 9803.4960
-Iter 7008 | Temp 9.0235 | New best score: 9798.6055
-Iter 7049 | Temp 8.6609 | New best score: 9792.3815
-Iter 7087 | Temp 8.3378 | New best score: 9761.2572
-Iter 7132 | Temp 7.9707 | New best score: 9760.4469
-Iter 7186 | Temp 7.5515 | New best score: 9659.8182
-Iter 7192 | Temp 7.5063 | New best score: 9657.0629
-Iter 7203 | Temp 7.4241 | New best score: 9652.1670
-Iter 7292 | Temp 6.7916 | New best score: 9583.9723
-Iter 7308 | Temp 6.6838 | New best score: 9568.2792
-Iter 7328 | Temp 6.5514 | New best score: 9525.2606
-Iter 7347 | Temp 6.4280 | New best score: 9519.1197
-Iter 7428 | Temp 5.9276 | New best score: 9497.6751
-Iter 7466 | Temp 5.7065 | New best score: 9490.8725
-Iter 7534 | Temp 5.3312 | New best score: 9466.9073
-Iter 7566 | Temp 5.1632 | New best score: 9464.9275
-Iter 7576 | Temp 5.1118 | New best score: 9446.6144
-Iter 7687 | Temp 4.5745 | New best score: 9438.7421
-Iter 7926 | Temp 3.6016 | New best score: 9427.6479
-Iter 7927 | Temp 3.5980 | New best score: 9398.6607
-Iter 8189 | Temp 2.7683 | New best score: 9398.1500
-Iter 8217 | Temp 2.6919 | New best score: 9384.2089
-Iter 8229 | Temp 2.6597 | New best score: 9377.2121
-Iter 8324 | Temp 2.4186 | New best score: 9358.1738
-Iter 8442 | Temp 2.1492 | New best score: 9356.3802
-Iter 8456 | Temp 2.1194 | New best score: 9331.5124
-Iter 8479 | Temp 2.0711 | New best score: 9328.8700
-Iter 8538 | Temp 1.9524 | New best score: 9320.0515
-Iter 8585 | Temp 1.8627 | New best score: 9310.2985
-Iter 8594 | Temp 1.8460 | New best score: 9307.7693
-Iter 8646 | Temp 1.7525 | New best score: 9300.1163
-Iter 8749 | Temp 1.5809 | New best score: 9289.9162
-Iter 8750 | Temp 1.5793 | New best score: 9250.1911
-Iter 8762 | Temp 1.5604 | New best score: 9245.6994
-Iter 8796 | Temp 1.5082 | New best score: 9241.4399
-Iter 9071 | Temp 1.1455 | New best score: 9196.8199
-Iter 9258 | Temp 0.9500 | New best score: 9186.7269
-Iter 9875 | Temp 0.5124 | New best score: 9174.7790
-Iter 10175 | Temp 0.3796 | New best score: 9167.1638
-Iter 10948 | Temp 0.1751 | New best score: 9129.4126
-Iter 13020 | Temp 0.0220 | New best score: 9123.1791
-Iter 13055 | Temp 0.0213 | New best score: 9095.3975
+<pre><code>Initial score: 12732.47110296018
+Iter 2 | Temp 9990.0000 | New best score: 12718.6901
+Iter 4 | Temp 9970.0300 | New best score: 12716.5095
+Iter 7 | Temp 9940.1498 | New best score: 12685.6782
+Iter 9 | Temp 9920.2794 | New best score: 12642.5526
+Iter 10 | Temp 9910.3592 | New best score: 12638.8462
+Iter 11 | Temp 9900.4488 | New best score: 12542.5762
+Iter 14 | Temp 9870.7771 | New best score: 12523.0278
+Iter 46 | Temp 9559.7596 | New best score: 12504.6455
+Iter 48 | Temp 9540.6496 | New best score: 12383.6190
+Iter 61 | Temp 9417.3626 | New best score: 12248.6612
+Iter 62 | Temp 9407.9453 | New best score: 12244.3843
+Iter 63 | Temp 9398.5373 | New best score: 12238.7386
+Iter 64 | Temp 9389.1388 | New best score: 12213.5580
+Iter 101 | Temp 9047.9215 | New best score: 12208.5179
+Iter 115 | Temp 8922.0706 | New best score: 12175.8403
+Iter 116 | Temp 8913.1486 | New best score: 12059.4649
+Iter 154 | Temp 8580.6403 | New best score: 12013.1597
+Iter 331 | Temp 7188.0504 | New best score: 12009.1491
+Iter 355 | Temp 7017.5066 | New best score: 11994.2359
+Iter 356 | Temp 7010.4891 | New best score: 11977.4583
+Iter 359 | Temp 6989.4787 | New best score: 11967.3664
+Iter 360 | Temp 6982.4892 | New best score: 11917.4177
+Iter 365 | Temp 6947.6465 | New best score: 11896.4623
+Iter 366 | Temp 6940.6989 | New best score: 11840.6877
+Iter 367 | Temp 6933.7582 | New best score: 11770.9703
+Iter 795 | Temp 4518.5350 | New best score: 11681.4484
+Iter 798 | Temp 4504.9930 | New best score: 11628.9765
+Iter 799 | Temp 4500.4880 | New best score: 11582.9320
+Iter 811 | Temp 4446.7782 | New best score: 11580.2444
+Iter 813 | Temp 4437.8890 | New best score: 11548.9987
+Iter 3423 | Temp 325.9123 | New best score: 11547.0234
+Iter 4481 | Temp 113.0804 | New best score: 11508.8260
+Iter 4483 | Temp 112.8543 | New best score: 11399.5056
+Iter 4486 | Temp 112.5161 | New best score: 11326.8883
+Iter 4498 | Temp 111.1733 | New best score: 11319.4706
+Iter 4499 | Temp 111.0621 | New best score: 11295.9416
+Iter 4974 | Temp 69.0515 | New best score: 11275.0452
+Iter 5050 | Temp 63.9956 | New best score: 11262.1319
+Iter 5149 | Temp 57.9607 | New best score: 11229.7964
+Iter 5154 | Temp 57.6714 | New best score: 11205.2780
+Iter 5158 | Temp 57.4411 | New best score: 11196.1786
+Iter 5167 | Temp 56.9262 | New best score: 11087.9924
+Iter 5178 | Temp 56.3031 | New best score: 11081.1763
+Iter 5179 | Temp 56.2468 | New best score: 11009.0013
+Iter 5181 | Temp 56.1344 | New best score: 10968.7620
+Iter 5182 | Temp 56.0783 | New best score: 10933.4541
+Iter 5183 | Temp 56.0222 | New best score: 10886.0147
+Iter 5196 | Temp 55.2982 | New best score: 10877.5685
+Iter 5308 | Temp 49.4363 | New best score: 10819.3164
+Iter 5356 | Temp 47.1183 | New best score: 10810.6668
+Iter 5368 | Temp 46.5560 | New best score: 10796.1447
+Iter 5369 | Temp 46.5094 | New best score: 10700.9954
+Iter 5399 | Temp 45.1342 | New best score: 10691.5463
+Iter 5413 | Temp 44.5064 | New best score: 10686.6430
+Iter 5886 | Temp 27.7267 | New best score: 10646.8831
+Iter 5887 | Temp 27.6990 | New best score: 10619.1669
+Iter 5897 | Temp 27.4232 | New best score: 10611.6375
+Iter 5906 | Temp 27.1774 | New best score: 10602.5119
+Iter 5934 | Temp 26.4266 | New best score: 10598.2256
+Iter 5947 | Temp 26.0851 | New best score: 10558.8322
+Iter 5950 | Temp 26.0070 | New best score: 10547.7660
+Iter 5990 | Temp 24.9867 | New best score: 10543.6873
+Iter 6016 | Temp 24.3451 | New best score: 10531.3783
+Iter 6017 | Temp 24.3208 | New best score: 10454.0478
+Iter 6022 | Temp 24.1994 | New best score: 10434.0434
+Iter 6023 | Temp 24.1752 | New best score: 10410.3600
+Iter 6033 | Temp 23.9345 | New best score: 10405.3147
+Iter 6177 | Temp 20.7231 | New best score: 10282.0619
+Iter 6180 | Temp 20.6610 | New best score: 10211.6298
+Iter 6183 | Temp 20.5991 | New best score: 10166.1072
+Iter 6217 | Temp 19.9102 | New best score: 10156.1168
+Iter 6406 | Temp 16.4798 | New best score: 10092.5040
+Iter 6422 | Temp 16.2181 | New best score: 10075.8764
+Iter 6440 | Temp 15.9286 | New best score: 10028.8854
+Iter 6448 | Temp 15.8017 | New best score: 9988.5902
+Iter 6449 | Temp 15.7859 | New best score: 9988.4204
+Iter 6452 | Temp 15.7385 | New best score: 9956.3999
+Iter 6473 | Temp 15.4113 | New best score: 9835.3640
+Iter 6481 | Temp 15.2885 | New best score: 9809.7708
+Iter 6627 | Temp 13.2107 | New best score: 9792.7453
+Iter 6628 | Temp 13.1975 | New best score: 9781.5839
+Iter 6769 | Temp 11.4610 | New best score: 9772.2984
+Iter 6817 | Temp 10.9236 | New best score: 9765.3539
+Iter 6872 | Temp 10.3388 | New best score: 9748.8150
+Iter 6875 | Temp 10.3078 | New best score: 9724.2184
+Iter 6999 | Temp 9.1051 | New best score: 9717.5923
+Iter 7034 | Temp 8.7918 | New best score: 9684.0645
+Iter 7039 | Temp 8.7479 | New best score: 9679.6254
+Iter 7044 | Temp 8.7043 | New best score: 9678.9413
+Iter 7079 | Temp 8.4048 | New best score: 9668.2246
+Iter 7104 | Temp 8.1971 | New best score: 9655.9313
+Iter 7107 | Temp 8.1726 | New best score: 9607.9923
+Iter 7122 | Temp 8.0508 | New best score: 9565.3772
+Iter 7150 | Temp 7.8284 | New best score: 9555.4345
+Iter 7154 | Temp 7.7972 | New best score: 9548.3383
+Iter 7276 | Temp 6.9012 | New best score: 9527.1869
+Iter 7369 | Temp 6.2881 | New best score: 9508.8847
+Iter 8064 | Temp 3.1371 | New best score: 9485.5709
+Iter 8382 | Temp 2.2822 | New best score: 9467.3825
+Iter 8405 | Temp 2.2303 | New best score: 9443.7306
+Iter 8494 | Temp 2.0403 | New best score: 9443.3330
+Iter 8518 | Temp 1.9919 | New best score: 9437.4686
+Iter 8529 | Temp 1.9701 | New best score: 9403.0879
+Iter 8567 | Temp 1.8966 | New best score: 9391.8907
+Iter 8658 | Temp 1.7315 | New best score: 9357.3191
+Iter 8797 | Temp 1.5067 | New best score: 9353.3917
+Iter 8886 | Temp 1.3784 | New best score: 9350.1081
+Iter 8909 | Temp 1.3470 | New best score: 9305.0563
+Iter 8951 | Temp 1.2916 | New best score: 9300.6870
+Iter 8989 | Temp 1.2434 | New best score: 9296.6011
+Iter 8991 | Temp 1.2409 | New best score: 9281.6083
+Iter 8994 | Temp 1.2372 | New best score: 9279.4576
+Iter 9041 | Temp 1.1804 | New best score: 9213.8809
+Iter 9213 | Temp 0.9938 | New best score: 9213.3587
+Iter 9456 | Temp 0.7793 | New best score: 9198.1721
+Iter 9618 | Temp 0.6627 | New best score: 9188.7897
+Iter 9828 | Temp 0.5371 | New best score: 9159.1751
+Iter 9853 | Temp 0.5238 | New best score: 9154.9894
+Iter 10004 | Temp 0.4504 | New best score: 9146.5230
+Iter 10163 | Temp 0.3841 | New best score: 9144.3002
+Iter 10392 | Temp 0.3055 | New best score: 9108.4162
+Iter 10460 | Temp 0.2854 | New best score: 9106.4775
+Iter 10568 | Temp 0.2562 | New best score: 9099.0835
+Iter 10626 | Temp 0.2417 | New best score: 9098.9576
+Iter 10838 | Temp 0.1955 | New best score: 9072.0139
+Iter 10928 | Temp 0.1787 | New best score: 9056.0320
+Iter 15031 | Temp 0.0029 | New best score: 9054.2622
+Iter 15524 | Temp 0.0018 | New best score: 9053.6081
 
 Finished after 18412 iterations.
-Final best score: 9095.397502217338</code></pre>
+Final best score: 9053.6081059829</code></pre>
 </div>
 <div class="cell-output cell-output-display page-columns page-full">
 <div class="page-columns page-full">
@@ -1719,9 +1723,9 @@ Final best score: 9095.397502217338</code></pre>
 <li><p>On the plot above, it’s clear that finding a code optimized better than the SGC isn’t that hard.</p></li>
 <li><p>It’s important to note that this is only optimized by the standards of the scoring function. It’s possible that this code might suck by evolution’s true standards.</p></li>
 <li class="page-columns page-full"><p>Let’s see what the codon map of this optimized code looks like:</p>
-<div id="9e26d4f0" class="cell page-columns page-full" data-execution_count="22">
+<div id="01b1544e" class="cell page-columns page-full" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>format_genetic_code_table(best_found_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display column-page" data-execution_count="45">
+<div class="cell-output cell-output-display column-page" data-execution_count="21">
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <colgroup>
 <col style="width: 20%">
@@ -1749,88 +1753,88 @@ Final best score: 9095.397502217338</code></pre>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">T</th>
-<td>Glu (T)<br>
-Gln (C)<br>
-Asn (A)<br>
-Asn (G)</td>
+<td>Pro (T)<br>
+His (C)<br>
+His (A)<br>
+Leu (G)</td>
+<td>Lys (T)<br>
+Lys (C)<br>
+Arg (A)<br>
+Leu (G)</td>
+<td>Cys (T)<br>
+Cys (C)<br>
+Cys (A)<br>
+Leu (G)</td>
 <td>Asp (T)<br>
-Thr (C)<br>
-Val (A)<br>
-Thr (G)</td>
-<td>Asp (T)<br>
-Thr (C)<br>
-Val (A)<br>
-Cys (G)</td>
-<td>Glu (T)<br>
-Glu (C)<br>
-Glu (A)<br>
-Glu (G)</td>
+Asp (C)<br>
+Asp (A)<br>
+Ser (G)</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">C</th>
-<td>Pro (T)<br>
-Gly (C)<br>
-Val (A)<br>
-Gly (G)</td>
-<td>Pro (T)<br>
+<td>Thr (T)<br>
+Glu (C)<br>
+Thr (A)<br>
+Val (G)</td>
+<td>Glu (T)<br>
+Glu (C)<br>
+Glu (A)<br>
+Ile (G)</td>
+<td>Ala (T)<br>
 Ala (C)<br>
-Val (A)<br>
-Thr (G)</td>
-<td>Pro (T)<br>
-Ala (C)<br>
-Val (A)<br>
-Cys (G)</td>
-<td>Ser (T)<br>
-Ser (C)<br>
-Ser (A)<br>
+Ala (A)<br>
+Val (G)</td>
+<td>Asp (T)<br>
+Glu (C)<br>
+Asp (A)<br>
 Ser (G)</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">A</th>
-<td>Trp (T)<br>
+<td>Pro (T)<br>
+His (C)<br>
+His (A)<br>
+Leu (G)</td>
+<td>Lys (T)<br>
+Lys (C)<br>
+Lys (A)<br>
+Leu (G)</td>
+<td>Gly (T)<br>
 Met (C)<br>
-Phe (A)<br>
-Tyr (G)</td>
-<td>Trp (T)<br>
-Met (C)<br>
-Ile (A)<br>
-Tyr (G)</td>
-<td>Trp (T)<br>
-Met (C)<br>
-Ile (A)<br>
-Cys (G)</td>
-<td>Trp (T)<br>
-Met (C)<br>
-Phe (A)<br>
-Tyr (G)</td>
+Met (A)<br>
+Leu (G)</td>
+<td>Gln (T)<br>
+Gln (C)<br>
+Gln (A)<br>
+Asn (G)</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">G</th>
-<td>Lys (T)<br>
-Gln (C)<br>
-His (A)<br>
-His (G)</td>
 <td>Tyr (T)<br>
 Tyr (C)<br>
-Ile (A)<br>
-His (G)</td>
+Trp (A)<br>
+Phe (G)</td>
+<td>Tyr (T)<br>
+Tyr (C)<br>
+Trp (A)<br>
+Ile (G)</td>
 <td>* (T)<br>
-Leu (C)<br>
-Ile (A)<br>
-Cys (G)</td>
-<td>Arg (T)<br>
-Arg (C)<br>
-Arg (A)<br>
-Arg (G)</td>
+Phe (C)<br>
+Trp (A)<br>
+Phe (G)</td>
+<td>Asn (T)<br>
+Asn (C)<br>
+Asn (A)<br>
+Asn (G)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div></li>
 <li class="page-columns page-full"><p>And compared to the SCG:</p>
-<div id="327bd29e" class="cell page-columns page-full" data-execution_count="23">
+<div id="049e4ed3" class="cell page-columns page-full" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>format_genetic_code_table(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display column-page" data-execution_count="46">
+<div class="cell-output cell-output-display column-page" data-execution_count="22">
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <colgroup>
 <col style="width: 20%">
@@ -1942,23 +1946,23 @@ Gly (G)</td>
 </ul></li>
 <li><p>We can do some further analysis by comparing the amino acid frequency distribution between the SGC and the optimized code.</p></li>
 <li class="page-columns page-full"><p>Let’s look at the SGC’s distribution:</p>
-<div id="e8889232" class="cell page-columns page-full" data-execution_count="24">
+<div id="e9e1dde8" class="cell page-columns page-full" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>plot_aa_distribution(SGC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display page-columns page-full">
 <div class="page-columns page-full">
 <figure class="figure page-columns page-full">
-<p class="page-columns page-full"><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-24-output-1.png" width="1335" height="663" class="figure-img column-page"></p>
+<p class="page-columns page-full"><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-24-output-1.png" width="1143" height="663" class="figure-img column-page"></p>
 </figure>
 </div>
 </div>
 </div></li>
 <li class="page-columns page-full"><p>We can see Leucine, Argenine and Serine have the most codon mappings in the SGC. What about our optimized code?</p>
-<div id="7e803dcf" class="cell page-columns page-full" data-execution_count="25">
+<div id="4907a959" class="cell page-columns page-full" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plot_aa_distribution(best_found_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display page-columns page-full">
 <div class="page-columns page-full">
 <figure class="figure page-columns page-full">
-<p class="page-columns page-full"><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-25-output-1.png" width="1335" height="663" class="figure-img column-page"></p>
+<p class="page-columns page-full"><img src="Arjun_Mehandiratta_Report_1_files/figure-html/cell-25-output-1.png" width="1143" height="663" class="figure-img column-page"></p>
 </figure>
 </div>
 </div>
